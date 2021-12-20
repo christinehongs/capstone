@@ -6,6 +6,7 @@ function App() {
       <div>app.js / home?</div>
     </>
   )
+  
 }
 
 export default App
