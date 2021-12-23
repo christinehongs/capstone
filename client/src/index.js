@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import BaseLayout from './components/layout/BaseLayout'
 import Sample from './components/Sample'
+import Converter from './components/currencyConverter'
 import store from './redux/store'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './utils/theme'
@@ -19,6 +20,7 @@ ReactDOM.render(
             <Routes>
               <Route path='/' element={<App />} />
               <Route path='/sample' element={<Sample />} />
+              <Route path='/converter' element={<Converter />} />
             </Routes>
           </BaseLayout>
         </Router>
