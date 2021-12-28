@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import BaseLayout from './components/layout/BaseLayout'
 import Sample from './components/Sample'
 import Converter from './components/currencyConverter'
+import callingData from './components/callingData'
 import store from './redux/store'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './utils/theme'
@@ -14,18 +15,19 @@ import theme from './utils/theme'
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider>
-      <Provider store={store} resetCSS={true} theme={theme} >
+      <Provider store={store} resetCSS={true} theme={theme}>
         <Router>
           <BaseLayout>
             <Routes>
-              <Route path='/' element={<App />} />
-              <Route path='/sample' element={<Sample />} />
-              <Route path='/converter' element={<Converter />} />
+              <Route path="/" element={<App />} />
+              <Route path="/sample" element={<Sample />} />
+              <Route path="/converter" element={<Converter />} />
+              <Route path="/callingData" element={<callingData />} />
             </Routes>
           </BaseLayout>
         </Router>
       </Provider>
     </ChakraProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
