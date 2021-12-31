@@ -1,39 +1,31 @@
-import React, {useState , useEffect} from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
+function GeoLocation() {
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [responseData, setResponseData] = useState('');
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  });
+  useEffect(() => {
+    let endPoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+    axios.get(endPoint).then((response) => {
+      console.log(response.data);
+      setResponseData(response.data);
+    });
+  }, []);
 
-function geoLocation() {
-    const [latitude, setLatitude] = useState('')
-    const [longitude, setLongitude] = useState('')
-    const [responseData, setResponseData] = useState('')
+  const flag = responseData.countryCode;
+  const newFlag = `${flag}`.toLowerCase();
 
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            setLatitude(position.coords.latitude)
-            setLongitude(position.coords.longitude)
-        })
-
-        let endPoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-        axios.get(endPoint)
-            .then((response) => {
-                console.log(response.data);
-                setResponseData(response.data);
-            })
-    }, [])
-
-    const flag = responseData.countryCode
-    const newFlag = `${flag}`.toLowerCase()
-
-    return (
-        <div>
-            <h1>{responseData.countryName}</h1>
-            <img
-              src={`https://flagcdn.com/48x36/${newFlag}.png`}
-              alt="..."
-              />
-            
-        </div>
-    )
+  return (
+    <div>
+      <h1>{responseData.countryName}</h1>
+      <img src={`https://flagcdn.com/48x36/${newFlag}.png`} alt="..." />
+    </div>
+  );
 }
 
-export default geoLocation
+export default GeoLocation;
