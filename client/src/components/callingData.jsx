@@ -1,4 +1,4 @@
-import Apples from '../data/apples'
+import Apples from '../data/apples1kg'
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sampleAction } from "../redux/actions/templateActions";
