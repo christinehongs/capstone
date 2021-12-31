@@ -1,5 +1,5 @@
-const beefRound1kg = [
-  [
+export const beefRound1kg = [
+
     {
       rank: 1,
       city: "Beirut, Lebanon",
@@ -2745,5 +2745,4 @@ const beefRound1kg = [
       city: "Peshawar, Pakistan",
       price: 2.98,
     },
-  ],
 ];

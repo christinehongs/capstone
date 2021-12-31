@@ -1,4 +1,4 @@
-const lettuce1Head = [
+export const lettuce1Head = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

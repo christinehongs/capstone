@@ -1,4 +1,4 @@
-const loafOfFreshWhiteBread500grams = [
+export const loafOfFreshWhiteBread500grams = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

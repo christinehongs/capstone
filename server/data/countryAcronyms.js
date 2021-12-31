@@ -1,6 +1,4 @@
-const countryAcronyms = 
-
-[
+export const countryAcronyms = [
   {
     acronym: "DZA",
     country: "Algeria",

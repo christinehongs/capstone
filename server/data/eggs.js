@@ -1,4 +1,4 @@
-const eggsDozen = [
+export const eggsDozen = [
   {
     rank: 1,
     city: "Zurich, Switzerland",

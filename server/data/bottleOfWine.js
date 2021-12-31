@@ -1,4 +1,4 @@
-const bottleOfWineMidRange = [
+export const bottleOfWineMidRange = [
   {
     rank: 1,
     city: "Surabaya, Indonesia",

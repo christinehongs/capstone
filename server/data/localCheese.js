@@ -1,4 +1,4 @@
-const localCheese1kg = [
+export const localCheese1kg = [
   {
     rank: 1,
     city: "Basel, Switzerland",

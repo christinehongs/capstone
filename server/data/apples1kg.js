@@ -1,4 +1,4 @@
-const apples1kg = [
+export const apples1kg = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

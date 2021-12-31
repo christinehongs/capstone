@@ -1,4 +1,4 @@
-const milk1Liter = [
+export const milk1Liter = [
   {
     rank: 1,
     city: "Beirut, Lebanon",
@@ -2965,3 +2965,4 @@ const milk1Liter = [
     price: 0.45,
   },
 ];
+

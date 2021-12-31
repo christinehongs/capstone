@@ -1,4 +1,4 @@
-const onion1kg = [
+export const onion1kg = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",
@@ -2840,3 +2840,4 @@ const onion1kg = [
     price: 0.22,
   },
 ];
+

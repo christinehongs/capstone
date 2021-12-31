@@ -1,4 +1,4 @@
-const waterBottleOneAndHalfLiterBottle = [
+export const waterBottleOneAndHalfLiterBottle = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

@@ -1,4 +1,4 @@
-const potato1kg = [
+export const potato1kg = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

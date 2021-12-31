@@ -1,4 +1,4 @@
-const importedBeerOneThirdLiterBottle = [
+export const importedBeerOneThirdLiterBottle = [
   {
     rank: 1,
     city: "Muscat, Oman",

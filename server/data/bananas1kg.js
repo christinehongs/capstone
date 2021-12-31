@@ -1,4 +1,4 @@
-const bananas1kg = [
+export const bananas1kg = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",

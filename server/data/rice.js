@@ -1,4 +1,4 @@
-const riceWhite1kg = [
+export const riceWhite1kg = [
   {
     rank: 1,
     city: "Hamilton, Bermuda",
