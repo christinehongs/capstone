@@ -1,0 +1,39 @@
+{
+  "name": "capstone",
+  "version": "1.0.0",
+  "description": "By, Christine Hong, Emily Ye, and Sam Davis",
+  "engines": {
+    "node": "^16.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "yarn install && concurrently \"yarn client-install\" \"yarn server-install\"",
+    "client-install": "cd client && yarn install",
+    "server-install": "cd server && yarn install",
+    "client-start": "cd client && yarn start",
+    "server-start": "cd client && yarn start",
+    "start": "concurrently \"yarn client-start\" \"yarn server-start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christinehongs/capstone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christinehongs/capstone/issues"
+  },
+  "homepage": "https://github.com/christinehongs/capstone#readme",
+  "dependencies": {
+    "concurrently": "^6.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "^2.5.1"
+  }
+}
