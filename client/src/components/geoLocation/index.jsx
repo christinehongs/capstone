@@ -21,9 +21,17 @@ function geoLocation() {
             })
     }, [])
 
+    const flag = responseData.countryCode
+    const newFlag = `${flag}`.toLowerCase()
+
     return (
         <div>
             <h1>{responseData.countryName}</h1>
+            <img
+              src={`https://flagcdn.com/48x36/${newFlag}.png`}
+              alt="..."
+              />
+            
         </div>
     )
 }
