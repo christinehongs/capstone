@@ -1,15 +1,12 @@
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { Converter, Layout } from '../components';
 
-import React,{ useEffect, useRef, useState } from "react";
-import Converter from "./Converter";
-import styled from 'styled-components'
-
-
-const KEY = "03c4279c1831eb95aba13645"
-
+const KEY = '03c4279c1831eb95aba13645';
 
 const ConverterWrapper = styled.div`
   text-align: center;
-`
+`;
 
 export default function CurrencyConverter() {
   const [firstInput, setFirstInput] = useState();
@@ -36,9 +33,7 @@ export default function CurrencyConverter() {
   }
 
   useEffect(() => {
-    fetch(
-      `https://v6.exchangerate-api.com/v6/${KEY}/latest/inr`
-    )
+    fetch(`https://v6.exchangerate-api.com/v6/${KEY}/latest/inr`)
       .then((response) => response.json())
       .then((responsedata) => {
         const firstCurr = Object.keys(responsedata.conversion_rates)[145];
@@ -82,16 +77,19 @@ export default function CurrencyConverter() {
     setMoney(value);
     setMoneyFrom(true);
   }
+
   function onMoneyChangeTo(e) {
     const value = e.target.value;
     setMoney(value);
     setMoneyFrom(false);
   }
+
   function handleFromCurrency(e) {
     if (firstInput === secondInput) {
       setFirstInput(second);
     } else setFirstInput(e.target.value);
   }
+
   function handleToCurrency(e) {
     if (firstInput === secondInput) {
       setSecondInput(first);
@@ -99,20 +97,22 @@ export default function CurrencyConverter() {
   }
 
   return (
-    <ConverterWrapper>
-      <h1>Currency Converter</h1>
-      <Converter
-        data={data}
-        money={money}
-        onMoneyChangeFrom={onMoneyChangeFrom}
-        onMoneyChangeTo={onMoneyChangeTo}
-        firstInput={firstInput}
-        secondInput={secondInput}
-        toAmount={toAmount}
-        fromAmount={fromAmount}
-        handleFromCurreny={handleFromCurrency}
-        handleToCurrency={handleToCurrency}
-      />
-    </ConverterWrapper>
+    <Layout>
+      <ConverterWrapper>
+        <h1>Currency Converter</h1>
+        <Converter
+          data={data}
+          money={money}
+          onMoneyChangeFrom={onMoneyChangeFrom}
+          onMoneyChangeTo={onMoneyChangeTo}
+          firstInput={firstInput}
+          secondInput={secondInput}
+          toAmount={toAmount}
+          fromAmount={fromAmount}
+          handleFromCurreny={handleFromCurrency}
+          handleToCurrency={handleToCurrency}
+        />
+      </ConverterWrapper>
+    </Layout>
   );
 }

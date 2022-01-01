@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Layout } from '../components';
 
 function GeoLocation() {
   const [latitude, setLatitude] = useState('');
@@ -21,10 +22,10 @@ function GeoLocation() {
   const newFlag = `${flag}`.toLowerCase();
 
   return (
-    <div>
+    <Layout>
       <h1>{responseData.countryName}</h1>
       <img src={`https://flagcdn.com/48x36/${newFlag}.png`} alt="..." />
-    </div>
+    </Layout>
   );
 }
 

@@ -1,10 +1,5 @@
-import React from "react";
-import { 
-  Select,
-  Stack,
-  HStack,
-  Input
-   } from '@chakra-ui/react'
+import React from 'react';
+import { Select, Stack, HStack, Input } from '@chakra-ui/react';
 
 function Converter(props) {
   return (
@@ -23,7 +18,11 @@ function Converter(props) {
           min="1"
           width={'10rem'}
         />
-        <Select value={props.firstInput} onChange={props.handleFromCurreny} width={'6rem'}>
+        <Select
+          value={props.firstInput}
+          onChange={props.handleFromCurreny}
+          width={'6rem'}
+        >
           {props.data.map((rate) => {
             return (
               <option key={rate} value={rate}>
@@ -41,7 +40,11 @@ function Converter(props) {
           min="1"
           width={'10rem'}
         />
-        <Select value={props.secondInput} onChange={props.handleToCurrency} width={'6rem'}>
+        <Select
+          value={props.secondInput}
+          onChange={props.handleToCurrency}
+          width={'6rem'}
+        >
           {props.data.map((rate) => {
             return (
               <option key={rate} value={rate}>
