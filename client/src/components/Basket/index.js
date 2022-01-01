@@ -1,35 +1,28 @@
 import React from 'react';
-import { useDrop } from 'react-dnd';
 import { Box } from '@chakra-ui/react';
+import { useDroppable } from '@dnd-kit/core';
 
-export const Basket = () => {
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
-    accept: 'fruit',
-    drop: () => ({ name: 'Basket' }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  }));
-
-  const isActive = canDrop && isOver;
-
+const Basket = () => {
+  const { isOver, setNodeRef } = useDroppable({});
   let backgroundColor = '#222';
 
-  if (isActive) {
-    backgroundColor = 'darkgreen';
-  } else if (canDrop) {
-    backgroundColor = 'darkkhaki';
-  }
+  const dropStyles = {
+    transform: `scale(1.1) rotate(-5deg)`,
+    opacity: `0.4`,
+    backgroundColor: isOver ? 'darkkhaki' : backgroundColor,
+  };
+
   return (
     <Box
-      ref={drop}
+      ref={setNodeRef}
       role={'Basket'}
       height="100px"
       width="100px"
-      background={backgroundColor}
+      style={dropStyles}
     >
-      {isActive ? 'Release to drop' : 'Drag a box here'}
+      {isOver ? 'Release to drop' : 'Drag a box here'}
     </Box>
   );
 };
+
+export default Basket;

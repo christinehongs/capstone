@@ -1,16 +1,16 @@
-import React from 'react'
-import Header from './Header'
+import React from 'react';
+import Header from '../Navbar/Navbar';
 
-function BaseLayout({children}) {
-    return (
-        <>
-        <Header />
+function BaseLayout({ children }) {
+  return (
+    <>
+      <Header />
 
-        <br />
+      <br />
 
-        {children}
-        </>
-    )
+      {children}
+    </>
+  );
 }
 
-export default BaseLayout
+export default BaseLayout;

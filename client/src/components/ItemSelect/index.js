@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { css } from '@emotion/react';
-import Item from '../components/Item';
-import { Basket } from '../components/Basket';
+import Item from '../GroceryItem';
+import { Basket } from '../index';
+import { DndContext } from '@dnd-kit/core';
 
 const wrapper = css`
   width: 100%;
@@ -29,7 +30,7 @@ const fruitsContainer = css`
 
 const ItemSelect = () => {
   return (
-    <>
+    <DndContext>
       <Box css={wrapper} p={7} mt={7}>
         <Box css={fruitsContainer}>
           <Item name="apple" bg="red" />
@@ -39,7 +40,7 @@ const ItemSelect = () => {
         </Box>
         <Basket />
       </Box>
-    </>
+    </DndContext>
   );
 };
 
