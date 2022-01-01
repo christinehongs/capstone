@@ -2,8 +2,10 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDroppable } from '@dnd-kit/core';
 
-const Basket = () => {
-  const { isOver, setNodeRef } = useDroppable({});
+const Basket = ({ children, id }) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id,
+  });
   let backgroundColor = '#222';
 
   const dropStyles = {
@@ -15,6 +17,7 @@ const Basket = () => {
   return (
     <Box ref={setNodeRef} height="100px" width="100px" style={dropStyles}>
       {isOver ? 'Release to drop' : 'Drag a box here'}
+      {children}
     </Box>
   );
 };
