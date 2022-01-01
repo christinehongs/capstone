@@ -13,13 +13,7 @@ const Basket = () => {
   };
 
   return (
-    <Box
-      ref={setNodeRef}
-      role={'Basket'}
-      height="100px"
-      width="100px"
-      style={dropStyles}
-    >
+    <Box ref={setNodeRef} height="100px" width="100px" style={dropStyles}>
       {isOver ? 'Release to drop' : 'Drag a box here'}
     </Box>
   );
