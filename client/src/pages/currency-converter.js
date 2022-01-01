@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Converter } from '../components';
+import { Converter, Layout } from '../components';
 
 const KEY = '03c4279c1831eb95aba13645';
 
@@ -97,20 +97,22 @@ export default function CurrencyConverter() {
   }
 
   return (
-    <ConverterWrapper>
-      <h1>Currency Converter</h1>
-      <Converter
-        data={data}
-        money={money}
-        onMoneyChangeFrom={onMoneyChangeFrom}
-        onMoneyChangeTo={onMoneyChangeTo}
-        firstInput={firstInput}
-        secondInput={secondInput}
-        toAmount={toAmount}
-        fromAmount={fromAmount}
-        handleFromCurreny={handleFromCurrency}
-        handleToCurrency={handleToCurrency}
-      />
-    </ConverterWrapper>
+    <Layout>
+      <ConverterWrapper>
+        <h1>Currency Converter</h1>
+        <Converter
+          data={data}
+          money={money}
+          onMoneyChangeFrom={onMoneyChangeFrom}
+          onMoneyChangeTo={onMoneyChangeTo}
+          firstInput={firstInput}
+          secondInput={secondInput}
+          toAmount={toAmount}
+          fromAmount={fromAmount}
+          handleFromCurreny={handleFromCurrency}
+          handleToCurrency={handleToCurrency}
+        />
+      </ConverterWrapper>
+    </Layout>
   );
 }

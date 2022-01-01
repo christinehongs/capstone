@@ -17,13 +17,25 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { css } from '@emotion/react';
+
+const navbarStyles = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+`;
 
 function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box
+        css={navbarStyles}
+        bg={useColorModeValue('gray.100', 'gray.900')}
+        px={4}
+      >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing="1rem">
             <Link to="/">Home Page</Link>

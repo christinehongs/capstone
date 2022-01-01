@@ -28,15 +28,21 @@ const fruitsContainer = css`
   }
 `;
 
+const items = [
+  { name: 'apple', bg: 'red' },
+  { name: 'pear', bg: 'green' },
+  { name: 'banana', bg: 'yellow' },
+  { name: 'grapes', bg: 'purple' },
+];
+
 const ItemSelect = () => {
   return (
     <DndContext>
       <Box css={wrapper} p={7} mt={7}>
         <Box css={fruitsContainer}>
-          <Item name="apple" bg="red" />
-          <Item name="pear" bg="green" />
-          <Item name="banana" bg="yellow" />
-          <Item name="grapes" bg="purple" />
+          {items.map((item, index) => (
+            <Item key={index} id={index} name={item.name} bg={item.bg} />
+          ))}
         </Box>
         <Basket />
       </Box>

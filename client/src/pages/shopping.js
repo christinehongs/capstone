@@ -1,11 +1,11 @@
 import React from 'react';
-import { ItemSelect } from '../components';
+import { ItemSelect, Layout } from '../components';
 
 const Shopping = () => {
   return (
-    <>
+    <Layout>
       <ItemSelect />
-    </>
+    </Layout>
   );
 };
 

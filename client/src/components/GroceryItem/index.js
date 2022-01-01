@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 const GroceryItem = ({ bg, name }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -9,7 +10,7 @@ const GroceryItem = ({ bg, name }) => {
 
   const dragStyles = transform
     ? {
-        transform: `scale(1.1) rotate(-5deg)`,
+        transform: CSS.Translate.toString(transform),
         opacity: `0.4`,
         backgroundColor: 'darkgreen',
       }
