@@ -26,9 +26,9 @@ const pageStyles = css`
   padding: 5rem 1rem 1rem 1rem;
 `;
 
-function Layout({ children }) {
+function Layout({ children, bg }) {
   return (
-    <Box css={layoutStyles}>
+    <Box css={layoutStyles} background={bg}>
       <Navbar />
       <Box css={pageStyles}>{children}</Box>
     </Box>
