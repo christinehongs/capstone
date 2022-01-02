@@ -1,40 +1,55 @@
 import React from 'react';
+import { useDrop } from 'react-dnd';
 import { Box } from '@chakra-ui/react';
-import { useDroppable } from '@dnd-kit/core';
 
-const Basket = ({ children, id }) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id,
-  });
-  let backgroundColor = 'white';
+export const Basket = () => {
+  const [currentItem, setCurrentItem] = React.useState(null);
+  const [basketItems, setBasketItems] = React.useState([]);
 
-  const dropStyles = {
-    // opacity: `0.4`,
-    backgroundColor: 'darkkhaki',
-  };
+  // React.useEffect(() => {
+  //   console.log(basketItems);
+  // }, [basketItems]);
+
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: 'fruit',
+    drop: (item) => {
+      // console.log(item);
+      setCurrentItem(item);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  const isActive = canDrop && isOver;
+
+  let backgroundColor = '#222';
+
+  if (isActive) {
+    backgroundColor = 'darkgreen';
+  } else if (canDrop) {
+    backgroundColor = 'darkkhaki';
+  }
 
   React.useEffect(() => {
-    console.log(id);
-  }, [id]);
+    currentItem && setBasketItems([...basketItems, currentItem]);
+  }, [currentItem]);
+
+  React.useEffect(() => {
+    console.log(basketItems);
+  }, [basketItems]);
 
   return (
     <Box
-      ref={setNodeRef}
-      height="500px"
-      width="100%"
+      ref={drop}
+      role={'Basket'}
       background={backgroundColor}
-      style={isOver ? dropStyles : null}
-      border="1px solid black"
-      borderRadius="8px"
-      ml={5}
-      p={4}
-      display="flex"
-      alignItems="flex-start"
-      justifyContent="flex-start"
-      flexWrap="wrap"
+      height="100%"
+      width="20%"
+      p={7}
     >
-      {/*{isOver ? 'Release to drop' : 'Drag a box here'}*/}
-      {children}
+      {isActive ? 'Release to drop' : 'Drag a box here'}
     </Box>
   );
 };
