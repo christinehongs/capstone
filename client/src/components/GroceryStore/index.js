@@ -31,10 +31,10 @@ const fruitsContainer = css`
 `;
 
 const items = [
-  { name: 'apple', bg: 'red', quantity: 0 },
-  { name: 'pear', bg: 'green', quantity: 0 },
-  { name: 'banana', bg: 'yellow', quantity: 0 },
-  { name: 'grapes', bg: 'purple', quantity: 0 },
+  { name: 'apple', bg: 'red' },
+  { name: 'pear', bg: 'green' },
+  { name: 'banana', bg: 'yellow' },
+  { name: 'grapes', bg: 'purple' },
 ];
 
 // export const DraggableGroceryItem = () => {
@@ -55,11 +55,6 @@ const items = [
 // };
 
 const GroceryStore = () => {
-  // const [item, setItem] = React.useState({
-  //   name: '',
-  //   quantity: 0,
-  // });
-
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
@@ -76,7 +71,6 @@ const GroceryStore = () => {
                 id={index}
                 name={item.name}
                 bg={item.bg}
-                {...item}
               />
             ))}
           </Box>

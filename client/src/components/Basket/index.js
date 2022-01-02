@@ -13,8 +13,7 @@ export const Basket = () => {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: 'fruit',
     drop: (item) => {
-      // console.log(item);
-      setCurrentItem(item);
+      setCurrentItem(item.name);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
