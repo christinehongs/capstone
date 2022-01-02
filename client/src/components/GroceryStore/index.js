@@ -31,10 +31,10 @@ const fruitsContainer = css`
 `;
 
 const items = [
-  { name: 'apple', bg: 'red' },
-  { name: 'pear', bg: 'green' },
-  { name: 'banana', bg: 'yellow' },
-  { name: 'grapes', bg: 'purple' },
+  { name: 'apple', bg: 'red', quantity: 0 },
+  { name: 'pear', bg: 'green', quantity: 0 },
+  { name: 'banana', bg: 'yellow', quantity: 0 },
+  { name: 'grapes', bg: 'purple', quantity: 0 },
 ];
 
 // export const DraggableGroceryItem = () => {
@@ -55,6 +55,11 @@ const items = [
 // };
 
 const GroceryStore = () => {
+  // const [item, setItem] = React.useState({
+  //   name: '',
+  //   quantity: 0,
+  // });
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
@@ -65,10 +70,15 @@ const GroceryStore = () => {
           justifyContent="center"
         >
           <Box css={fruitsContainer} p={4}>
-            <GroceryItem name="apple" bg="red" />
-            <GroceryItem name="pear" bg="green" />
-            <GroceryItem name="banana" bg="yellow" />
-            <GroceryItem name="grapes" bg="purple" />
+            {items.map((item, index) => (
+              <GroceryItem
+                key={index}
+                id={index}
+                name={item.name}
+                bg={item.bg}
+                {...item}
+              />
+            ))}
           </Box>
           <Basket />
         </Box>

@@ -2,16 +2,22 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDrag } from 'react-dnd';
 
-const GroceryItem = ({ bg, name }) => {
-  const [quantity, setQuantity] = React.useState(0);
+const GroceryItem = ({ bg, name, quantity }) => {
+  // const [onlyOne, setOnlyOne] = React.useState(false);
+  const [updatedQuantity, setUpdatedQuantity] = React.useState(0);
 
   const [collected, drag] = useDrag(() => ({
     type: 'fruit',
-    item: { name },
+    item: {
+      name,
+      quantity: updatedQuantity,
+    },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        console.log(`${item.name} added to ${dropResult.name}`);
+        console.log(
+          `${item.quantity} ${item.name} added to ${dropResult.name}`
+        );
       }
     },
     collect: (monitor) => ({
@@ -22,21 +28,30 @@ const GroceryItem = ({ bg, name }) => {
 
   const handleMouseClick = (e) => {
     if (e.button === 0) {
-      setQuantity(quantity + 1);
+      setUpdatedQuantity(updatedQuantity + 1);
     } else if (e.button === 2) {
       e.preventDefault();
-      setQuantity(quantity - 1);
+      if (updatedQuantity > 0) {
+        setUpdatedQuantity(updatedQuantity - 1);
+      }
     }
   };
 
   React.useEffect(() => {
-    console.log(name, quantity);
-  }, [quantity]);
+    // if (quantity > 1) {
+    //   setOnlyOne(false);
+    // } else if (quantity === 1) {
+    //   setOnlyOne(true);
+    // }
+
+    updatedQuantity > 0 && console.log(name, updatedQuantity);
+  }, [updatedQuantity]);
 
   return (
     <Box
       onContextMenu={handleMouseClick}
       onClick={handleMouseClick}
+      // onMouseDown={handleMouseClick}
       className="fruit"
       background={collected.isDragging ? 'gray' : bg}
       ref={drag}
