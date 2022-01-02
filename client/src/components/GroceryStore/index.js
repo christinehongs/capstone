@@ -4,8 +4,6 @@ import { css } from '@emotion/react';
 import { Basket, GroceryItem, Layout } from '../index';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-// import { DndContext, DragOverlay, useDraggable } from '@dnd-kit/core';
-// import { Draggable } from '../../utils/Draggable';
 
 const wrapper = css`
   width: 100%;
@@ -36,23 +34,6 @@ const items = [
   { name: 'banana', bg: 'yellow' },
   { name: 'grapes', bg: 'purple' },
 ];
-
-// export const DraggableGroceryItem = () => {
-//   const { isDragging, setNodeRef, listeners } = useDraggable({
-//     id: 'draggable-item',
-//   });
-//
-//   return (
-//     <GroceryItem
-//       dragging={isDragging}
-//       ref={setNodeRef}
-//       listeners={listeners}
-//       style={{
-//         opacity: isDragging ? 0 : undefined,
-//       }}
-//     />
-//   );
-// };
 
 const GroceryStore = () => {
   return (

@@ -2,9 +2,7 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { useDrag } from 'react-dnd';
 
-const GroceryItem = ({ bg, name, quantity }) => {
-  // const [onlyOne, setOnlyOne] = React.useState(false);
-
+const GroceryItem = ({ bg, name }) => {
   const [collected, drag] = useDrag(() => ({
     type: 'fruit',
     item: {

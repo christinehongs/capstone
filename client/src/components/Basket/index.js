@@ -6,10 +6,6 @@ export const Basket = () => {
   const [currentItem, setCurrentItem] = React.useState(null);
   const [basketItems, setBasketItems] = React.useState([]);
 
-  // React.useEffect(() => {
-  //   console.log(basketItems);
-  // }, [basketItems]);
-
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: 'fruit',
     drop: (item) => {
