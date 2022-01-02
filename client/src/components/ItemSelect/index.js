@@ -55,7 +55,6 @@ export const DraggableGroceryItem = () => {
 };
 
 const ItemSelect = () => {
-  // const [activeId, setActiveId] = React.useState(null);
   const [isDragging, setIsDragging] = React.useState(false);
   const [parent, setParent] = React.useState(null);
 
