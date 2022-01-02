@@ -1,33 +1,34 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import { useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
+import { useDrag } from 'react-dnd';
 
 const GroceryItem = ({ bg, name }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: 'draggable',
-  });
-
-  const dragStyles = transform
-    ? {
-        transform: CSS.Translate.toString(transform),
-        opacity: `0.4`,
-        backgroundColor: 'darkgreen',
+  const [collected, drag] = useDrag(() => ({
+    type: 'fruit',
+    item: {
+      name,
+    },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        console.log(`${item.name} added to ${dropResult.name}`);
       }
-    : undefined;
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      handlerId: monitor.getHandlerId(),
+    }),
+  }));
 
   return (
     <Box
       className="fruit"
-      background={bg}
-      ref={setNodeRef}
+      background={collected.isDragging ? 'gray' : bg}
+      ref={drag}
       height={['50px', null, '70px', '100px']}
       width={['50px', null, '70px', '100px']}
       m="0.4rem"
-      cursor="pointer"
-      style={dragStyles}
-      {...listeners}
-      {...attributes}
+      opacity={collected.isDragging ? 0.25 : 1}
     />
   );
 };
