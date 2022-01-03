@@ -16,7 +16,7 @@ function GeoLocation() {
       console.log(response.data);
       setResponseData(response.data);
     });
-  }, []);
+  }, [latitude, longitude]);
 
   const flag = responseData.countryCode;
   const newFlag = `${flag}`.toLowerCase();
