@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { useDrag } from 'react-dnd';
 
-const GroceryItem = ({ bg, name }) => {
+const GroceryItem = ({ component, name }) => {
   const [collected, drag] = useDrag(() => ({
     type: 'fruit',
     item: {
@@ -21,15 +21,16 @@ const GroceryItem = ({ bg, name }) => {
   }));
 
   return (
-    <Box
-      className="fruit"
-      background={collected.isDragging ? 'gray' : bg}
-      ref={drag}
-      height={['50px', null, '70px', '100px']}
-      width={['50px', null, '70px', '100px']}
-      m="0.4rem"
-      opacity={collected.isDragging ? 0.25 : 1}
-    />
+    // <Box
+    //   className="fruit"
+    //   background={collected.isDragging ? 'gray' : bg}
+    //   ref={drag}
+    //   height={['50px', null, '70px', '100px']}
+    //   width={['50px', null, '70px', '100px']}
+    //   m="0.4rem"
+    //   opacity={collected.isDragging ? 0.25 : 1}
+    // />
+    <Image src={component} />
   );
 };
 
