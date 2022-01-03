@@ -29,7 +29,7 @@ export const Basket = () => {
 
   React.useEffect(() => {
     currentItem && setBasketItems([...basketItems, currentItem]);
-  }, [currentItem]);
+  }, [currentItem, basketItems]);
 
   React.useEffect(() => {
     console.log(basketItems);
