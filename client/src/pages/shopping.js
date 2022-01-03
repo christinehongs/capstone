@@ -1,10 +1,10 @@
 import React from 'react';
-import { ItemSelect, Layout } from '../components';
+import { GroceryStore, Layout } from '../components';
 
 const Shopping = () => {
   return (
     <Layout>
-      <ItemSelect />
+      <GroceryStore />
     </Layout>
   );
 };

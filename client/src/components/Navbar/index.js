@@ -20,10 +20,12 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { css } from '@emotion/react';
 
 const navbarStyles = css`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
+  max-height: 4rem;
+  min-height: 4rem;
 `;
 
 function Navbar() {
