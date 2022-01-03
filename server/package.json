@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dnd-kit/core": "^4.0.3",
     "@google-cloud/firestore": "^5.0.1",
     "lodash": "^4.17.21"
   }

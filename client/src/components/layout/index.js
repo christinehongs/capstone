@@ -8,27 +8,23 @@ const layoutStyles = css`
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
 `;
 
 const pageStyles = css`
-  height: 100%;
+  height: 95%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 5rem 1rem 1rem 1rem;
+  position: relative;
+  //margin-top: 4rem;
 `;
 
-function Layout({ children }) {
+function Layout({ children, bg }) {
   return (
-    <Box css={layoutStyles}>
+    <Box css={layoutStyles} background={bg}>
       <Navbar />
       <Box css={pageStyles}>{children}</Box>
     </Box>

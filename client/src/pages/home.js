@@ -41,6 +41,7 @@ const Home = () => {
             height="100%"
             mx={4}
             padding="1rem"
+            borderRadius="8px"
           >
             {/*name box*/}
             <Box border="2px solid black" borderRadius="8px" mb="20px">
