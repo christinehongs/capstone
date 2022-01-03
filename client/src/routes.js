@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import {
   CurrencyConverter,
-  GeoLocation,
   Home,
   Sample,
   Shopping,
@@ -14,7 +13,6 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/sample" element={<Sample />} />
       <Route path="/currency-converter" element={<CurrencyConverter />} />
-      <Route path="/location" element={<GeoLocation />} />
       <Route path="/shopping" element={<Shopping />} />
     </Routes>
   );

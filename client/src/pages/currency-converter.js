@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Converter, Layout } from '../components';
 
+
 const KEY = '03c4279c1831eb95aba13645';
 
 const ConverterWrapper = styled.div`
@@ -33,7 +34,7 @@ export default function CurrencyConverter() {
   }
 
   useEffect(() => {
-    fetch(`https://v6.exchangerate-api.com/v6/${KEY}/latest/inr`)
+    fetch(`https://v6.exchangerate-api.com/v6/${KEY}/latest/usd`)
       .then((response) => response.json())
       .then((responsedata) => {
         const firstCurr = Object.keys(responsedata.conversion_rates)[145];

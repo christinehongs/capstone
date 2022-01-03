@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
@@ -19,6 +20,7 @@ import {
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { css } from '@emotion/react';
 
+
 const navbarStyles = css`
   //position: absolute;
   //top: 0;
@@ -26,13 +28,32 @@ const navbarStyles = css`
   position: relative;
   width: 100%;
   max-height: 4rem;
-  min-height: 3.5rem;
+  min-height: 4rem;
   height: 5%;
   z-index: 3;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
 `;
 
 function Navbar() {
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [responseData, setResponseData] = useState('');
+
+  navigator.geolocation.getCurrentPosition((position) => {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  });
+  useEffect(() => {
+    let endPoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+    axios.get(endPoint).then((response) => {
+      setResponseData(response.data);
+    });
+  }, [latitude, longitude]);
+
+  const flag = responseData.countryCode;
+  const newFlag = `${flag}`.toLowerCase();
+  const countryName = responseData.countryName
+
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -44,9 +65,10 @@ function Navbar() {
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing="1rem">
-            <Link to="/">Home Page</Link>
+            <Link to="/">Home</Link>
             <Link to="/sample">Redux Button</Link>
-            <Link to="/converter">Currency Converter</Link>
+            <Link to="/currency-converter">Currency Converter</Link>
+            <Link to="/shopping">Shopping</Link>
           </HStack>
 
           <Flex alignItems={'center'}>
@@ -65,7 +87,7 @@ function Navbar() {
                 >
                   <Avatar
                     size={'sm'}
-                    src={'https://avatars.dicebear.com/api/male/username.svg'}
+                    src={`https://flagcdn.com/w80/${newFlag}.png`}
                   />
                 </MenuButton>
                 <MenuList alignItems={'center'}>
@@ -73,18 +95,17 @@ function Navbar() {
                   <Center>
                     <Avatar
                       size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
+                      src={`https://flagcdn.com/256x192/${newFlag}.png`}
                     />
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{countryName}</p>
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem><Link to="/currency-converter">Currency Converter</Link></MenuItem>
+                  <MenuItem>placeholder</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
