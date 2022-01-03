@@ -3,7 +3,7 @@ import { GroceryStore, Layout } from '../components';
 
 const Shopping = () => {
   return (
-    <Layout>
+    <Layout bg="#987670">
       <GroceryStore />
     </Layout>
   );
