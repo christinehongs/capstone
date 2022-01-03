@@ -1,28 +1,41 @@
 import React from 'react';
 import { Box, Image } from '@chakra-ui/react';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Apple from '../../assets/images/apple.svg';
-import Tomato from '../../assets/images/tomato.svg';
-import Banana from '../../assets/images/banana.svg';
-import Orange from '../../assets/images/orange.svg';
-import Supermarket from '../../assets/images/supermarket.svg';
-import StallA from '../../assets/images/stall-1.svg';
-import StallB from '../../assets/images/stall_2.svg';
-import Cart from '../../assets/images/shopping-cart.svg';
+import { css } from '@emotion/react';
+import * as Item from '../../assets/images';
+import { GroceryItem } from '../index';
+
+const shelfStyles = css`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+
+  &.row-1 {
+    //bottom: 11rem;
+    //left: 8%;
+    max-width: 388px;
+    width: 100%;
+    z-index: 2;
+    background-color: white;
+
+    .item {
+      position: relative;
+
+      //img {
+      //  position: absolute;
+      //}
+    }
+  }
+`;
 
 const GroceryStoreWrapper = styled(Box)`
-  position: absolute;
-  top: 0;
+  position: relative;
   height: 100%;
-
   z-index: 1;
-  //left: 0;
-
-  img {
-  }
 
   .supermarket {
     width: 100%;
@@ -41,33 +54,11 @@ const GroceryStoreWrapper = styled(Box)`
   }
 `;
 
-const wrapper = css`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-`;
-
-const fruitsContainer = css`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 80%;
-  height: 100%;
-  background-color: antiquewhite;
-
-  .fruit {
-    transition: opacity 0.2s ease-in-out;
-    cursor: pointer;
-  }
-`;
-
 const items = [
-  { name: 'Apple', component: Apple },
-  { name: 'Tomato', component: Tomato },
-  { name: 'Banana', component: Banana },
-  { name: 'Grapes', component: Orange },
+  { name: 'Apple', component: Item.Apple },
+  { name: 'Tomato', component: Item.Tomato },
+  { name: 'Banana', component: Item.Banana },
+  { name: 'Grapes', component: Item.Orange },
 ];
 
 const GroceryStore = () => {
@@ -76,7 +67,7 @@ const GroceryStore = () => {
       <GroceryStoreWrapper background="white">
         <Image
           className="supermarket"
-          src={Supermarket}
+          src={Item.Supermarket}
           alt="grocery-store"
           zIndex="1"
           maxH={['800px', null, null, null, '1200px', 'none']}
@@ -85,35 +76,47 @@ const GroceryStore = () => {
         />
         <Image
           className="cart"
-          src={Cart}
+          src={Item.Cart}
           alt="cart"
           zIndex="3"
           ml={4}
           position="absolute"
-          left="0"
-          bottom="0"
-          maxW={['300px', '400px', null, null, '0px', null]}
+          left={['2rem']}
+          top="55%"
+          maxW={['200px', '300px', null, null, '400px', null]}
         />
         <Box
           className="stall-container"
-          bottom={['10%', null, null, '5rem']}
-          right="0"
-          maxW={[null, null, '600px', '750px', '900px', '1200px']}
+          bottom={[0, null, null, '1rem']}
+          right={['1rem', null, null, '3rem']}
+          maxW={[null, null, '600px', '750px', '900px']}
         >
-          <Box className="stall-a">
+          <Box className="stall" mx={2}>
             <Image
-              className="stall"
-              src={StallA}
+              src={Item.StallA}
               alt="stall"
               maxH="500px"
               zIndex="2"
               mx={4}
             />
+            <Box
+              css={shelfStyles}
+              className="row-1"
+              height={['38px']}
+              bottom={['11rem']}
+              left={['8%']}
+            >
+              <GroceryItem component={Item.Apple} height="90%" />
+              <GroceryItem component={Item.Banana} height="100%" />
+              <GroceryItem component={Item.Orange} />
+            </Box>
+            <Box css={shelfStyles} className="row-2"></Box>
+            <Box css={shelfStyles} className="row-3"></Box>
           </Box>
-          <Box className="stall-b">
+          <Box className="stall" mx={2}>
             <Image
               className="stall"
-              src={StallB}
+              src={Item.StallB}
               alt="stall"
               maxH="500px"
               zIndex="2"
