@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
@@ -19,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { css } from '@emotion/react';
+import useGeolocation from '../../hooks/useGeolocation'
 
 
 const navbarStyles = css`
@@ -32,25 +32,7 @@ const navbarStyles = css`
 `;
 
 function Navbar() {
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [responseData, setResponseData] = useState('');
-
-  navigator.geolocation.getCurrentPosition((position) => {
-    setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
-  });
-  useEffect(() => {
-    let endPoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
-    axios.get(endPoint).then((response) => {
-      setResponseData(response.data);
-    });
-  }, [latitude, longitude]);
-
-  const flag = responseData.countryCode;
-  const newFlag = `${flag}`.toLowerCase();
-  const countryName = responseData.countryName
-
+  const { newFlag, countryName } = useGeolocation();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -97,7 +79,7 @@ function Navbar() {
                   </Center>
                   <br />
                   <Center>
-                    <p>{countryName}</p>
+                    <div>{countryName}</div>
                   </Center>
                   <br />
                   <MenuDivider />

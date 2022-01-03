@@ -1,17 +1,17 @@
+import { Heading, Box } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Converter, Layout } from '../components';
 
-
 const KEY = '03c4279c1831eb95aba13645';
 
-const ConverterWrapper = styled.div`
+const ConverterWrapper = styled(Box)`
   text-align: center;
 `;
 
 export default function CurrencyConverter() {
-  const [firstInput, setFirstInput] = useState();
-  const [secondInput, setSecondInput] = useState();
+  const [firstInput, setFirstInput] = useState('USD');
+  const [secondInput, setSecondInput] = useState('EUR');
   const [data, setData] = useState([]);
   const [money, setMoney] = useState(1);
   const [moneyFrom, setMoneyFrom] = useState(true);
@@ -40,12 +40,13 @@ export default function CurrencyConverter() {
         const firstCurr = Object.keys(responsedata.conversion_rates)[145];
         setData([...Object.keys(responsedata.conversion_rates)]);
         setFirstInput(responsedata.base_code);
-        setSecondInput(Object.keys(responsedata.conversion_rates)[145]);
         setExchangeRate(responsedata.conversion_rates[firstCurr]);
       });
   }, []);
+
   const first = useFirstPrevious(firstInput);
   const second = useSecondPrevious(secondInput);
+
   useEffect(() => {
     if (firstInput === secondInput) {
       setFirstInput(second);
@@ -94,13 +95,15 @@ export default function CurrencyConverter() {
   function handleToCurrency(e) {
     if (firstInput === secondInput) {
       setSecondInput(first);
-    } else setSecondInput(e.target.value);
+    } else {
+      setSecondInput(e.target.value);
+    }
   }
 
   return (
     <Layout>
-      <ConverterWrapper>
-        <h1>Currency Converter</h1>
+      <ConverterWrapper mt={4}>
+        <Heading mb={4}>Currency Converter</Heading>
         <Converter
           data={data}
           money={money}

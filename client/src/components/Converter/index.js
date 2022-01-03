@@ -1,19 +1,19 @@
 import React from 'react';
-import { Select, Stack, HStack, Input } from '@chakra-ui/react';
+import { Select, Stack, HStack, Input, Text } from '@chakra-ui/react';
 
 function Converter(props) {
   return (
     <Stack alignItems={'center'}>
-      <p>
+      <div>
         {props.fromAmount} {props.firstInput} <h1>=</h1>
-      </p>
-      <h3>
+      <Text>
         {props.toAmount} {props.secondInput}
-      </h3>
-      <HStack>
+      </Text>
+      </div>
+      <HStack sx={{ marginTop: '1.5rem !important'}}>
         <Input
           type="number"
-          value={props.fromAmount}
+          value={props.fromAmount >= 1000000000 ? 1000000000: props.fromAmount}
           onChange={props.onMoneyChangeFrom}
           min="1"
           width={'10rem'}
