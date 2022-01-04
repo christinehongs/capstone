@@ -141,7 +141,7 @@ const GroceryStore = () => {
                   I am from
                 </FormLabel>
                 <Select
-                  {...register('initial country')}
+                  {...register('initialCountry')}
                   maxW="200px"
                   id="initialCountry"
                   placeholder="Select country"
@@ -157,7 +157,7 @@ const GroceryStore = () => {
                   How much would my groceries cost in
                 </FormLabel>
                 <Select
-                  {...register('secondary country')}
+                  {...register('secondaryCountry')}
                   maxW="200px"
                   id="secondaryCountry"
                   placeholder="Select country"
