@@ -1,49 +1,46 @@
 import React from 'react';
 import {
   Box,
-  Image,
-  FormControl,
-  HStack,
-  FormLabel,
-  Select,
   Button,
+  FormControl,
+  FormLabel,
+  HStack,
+  Image,
+  Select,
+  Text,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { css } from '@emotion/react';
 import * as Item from '../../assets/images';
+import { Supermarket } from '../../assets/images';
 import { GroceryItem } from '../index';
 import { countryAcronyms } from '../../data/countryAcronyms';
+import { useForm } from 'react-hook-form';
+import Stall from '../Stall';
 
 const shelfStyles = css`
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  position: absolute;
+  justify-content: space-evenly;
   width: 100%;
+  position: relative;
 
-  &.row-1 {
-    //bottom: 11rem;
-    //left: 8%;
-    max-width: 388px;
-    width: 100%;
-    z-index: 2;
-    background-color: white;
-
-    .item {
-      position: relative;
-
-      //img {
-      //  position: absolute;
-      //}
-    }
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
   }
 `;
 
 const GroceryStoreWrapper = styled(Box)`
   position: relative;
-  height: 100%;
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   z-index: 1;
 
   .supermarket {
@@ -52,153 +49,279 @@ const GroceryStoreWrapper = styled(Box)`
 
   .stall-container {
     width: 100%;
-    position: absolute;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+  }
+`;
 
-    .stall {
-      position: relative;
+const formWrapper = css`
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  width: 100%;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+
+  .hstack {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .select {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    label {
+      margin-bottom: 0;
     }
   }
 `;
 
-const wrapper = css`
+const signWrapper = css`
+  position: relative;
+  //top: 5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  aspect-ratio: 8 / 7;
+
+  .sign {
+    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
-const items = [
-  { name: 'Apple', component: Item.Apple },
-  { name: 'Tomato', component: Item.Tomato },
-  { name: 'Banana', component: Item.Banana },
-  { name: 'Grapes', component: Item.Orange },
-];
-
-
 const GroceryStore = () => {
-  const [firstCountry, setFirstCountry] = React.useState('')
-  const [secondCountry, setSecondCountry] = React.useState('')
+  const [selection, setSelection] = React.useState('');
+  const [firstCountry, setFirstCountry] = React.useState('');
+  const [secondCountry, setSecondCountry] = React.useState('');
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   function handleFirstCountry(e) {
-    e.preventDefault()
-    console.log(e.target.value)
-    setFirstCountry(e.target.value)
+    e.preventDefault();
+    console.log(e.target.value);
+    setFirstCountry(e.target.value);
   }
 
   function handleSecondCountry(e) {
-    e.preventDefault()
-    console.log(e.target.value)
-    setSecondCountry(e.target.value)
+    e.preventDefault();
+    console.log(e.target.value);
+    setSecondCountry(e.target.value);
   }
+
+  const handleOnSubmit = () => {};
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <GroceryStoreWrapper background="white">
-        <Box css={wrapper}>
-          <FormControl>
-            <HStack ml={5} mt={10} sx={{ position: 'absolute', color: 'black !important'}}>
-              <Box mr={5}>
-                <FormLabel htmlFor="initialCountry">I am from:</FormLabel>
+      <GroceryStoreWrapper
+        background={`url(${Supermarket})`}
+        backgroundSize="cover"
+        height="100%"
+        width="100%"
+      >
+        <Box css={formWrapper} p={[4]}>
+          <FormControl onSubmit={handleSubmit(handleOnSubmit)}>
+            <HStack className="hstack">
+              <Box className="select">
+                <FormLabel htmlFor="initialCountry" mr={2}>
+                  I am from
+                </FormLabel>
                 <Select
-                  border="none"
+                  {...register('initial country')}
+                  maxW="200px"
                   id="initialCountry"
                   placeholder="Select country"
                   onChange={handleFirstCountry}
+                  mr={1}
                 >
-                  {countryAcronyms.map((data) => {
-                    return <option>{data.country}</option>;
+                  {countryAcronyms.map((data, index) => {
+                    return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
-              </Box>
-              <Box>
-                <FormLabel htmlFor="secondaryCountry">
-                  I want to see how much my groceries cost in:
+                .
+                <FormLabel htmlFor="secondaryCountry" ml={2} mr={2}>
+                  How much would my groceries cost in
                 </FormLabel>
                 <Select
-                  border="none"
+                  {...register('secondary country')}
+                  maxW="200px"
                   id="secondaryCountry"
                   placeholder="Select country"
                   onChange={handleSecondCountry}
+                  mr={1}
                 >
-                  {countryAcronyms.map((data) => {
-                    return <option>{data.country}</option>;
+                  {countryAcronyms.map((data, index) => {
+                    return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
+                ?
               </Box>
-              {/* <Box textAlign="center">
+              <Box textAlign="center">
                 <Button
-                  mt={8}
                   colorScheme="teal"
                   variant="solid"
                   px="3rem"
-                  type='submit'
-                  value='submit'
+                  type="submit"
+                  value="submit"
                 >
                   Let's go!
                 </Button>
-              </Box> */}
+              </Box>
             </HStack>
           </FormControl>
         </Box>
-        <Image
-          className="supermarket"
-          src={Item.Supermarket}
-          alt="grocery-store"
-          zIndex="1"
-          maxH={['800px', null, null, null, '1200px', 'none']}
-          // maxW={['1200px', '']}
-          width="100%"
-        />
-        <Image
-          className="cart"
-          src={Item.Cart}
-          alt="cart"
-          zIndex="3"
-          ml={4}
-          position="absolute"
-          left={['2rem']}
-          top="55%"
-          maxW={['200px', '300px', null, null, '400px', null]}
-        />
         <Box
-          className="stall-container"
-          bottom={[0, null, null, '1rem']}
-          right={['1rem', null, null, '3rem']}
-          maxW={[null, null, '600px', '750px', '900px']}
+          pos="absolute"
+          top="10%"
+          left="12.45rem"
+          width="84%"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-evenly"
         >
-          <Box className="stall" mx={2}>
-            <Image
-              src={Item.StallA}
-              alt="stall"
-              maxH="500px"
-              zIndex="2"
-              mx={4}
-            />
+          <Box
+            css={signWrapper}
+            background={`url(${Item.Sign})`}
+            backgroundSize="cover"
+            height={['260px']}
+          >
             <Box
-              css={shelfStyles}
-              className="row-1"
-              height={['38px']}
-              bottom={['11rem']}
-              left={['8%']}
+              className="sign"
+              width="80%"
+              height="50%"
+              mb={6}
+              ml={[-3]}
+              borderRadius="5px"
             >
-              <GroceryItem component={Item.Apple} height="90%" />
-              <GroceryItem component={Item.Banana} height="100%" />
-              <GroceryItem component={Item.Orange} />
+              <Text>{selection}</Text>
             </Box>
-            <Box css={shelfStyles} className="row-2"></Box>
-            <Box css={shelfStyles} className="row-3"></Box>
           </Box>
-          <Box className="stall" mx={2}>
-            <Image
-              className="stall"
-              src={Item.StallB}
-              alt="stall"
-              maxH="500px"
-              zIndex="2"
-              mx={4}
-            />
+          <Box
+            css={signWrapper}
+            background={`url(${Item.Sign})`}
+            backgroundSize="cover"
+            height={['260px']}
+          >
+            <Box
+              className="sign"
+              width="80%"
+              height="50%"
+              mb={6}
+              ml={[-3]}
+              borderRadius="5px"
+            >
+              <p>hello</p>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          width="100%"
+          pos="absolute"
+          display="flex"
+          alignItems="flex-end"
+          justifyContent="space-evenly"
+          bottom={'1rem'}
+        >
+          <Image
+            className="cart"
+            src={Item.Cart}
+            alt="cart"
+            zIndex="3"
+            maxW={['200px', '300px', null, null, null]}
+          />
+          <Box
+            className="stall-container"
+            pos="relative"
+            maxW={[null, null, '600px', '750px', '900px']}
+            mb={['1rem']}
+          >
+            <Stall color="green">
+              <Box css={shelfStyles} pt={'7.6rem'}>
+                <GroceryItem
+                  name="apple"
+                  setSelection={setSelection}
+                  component={Item.Apple}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="banana"
+                  setSelection={setSelection}
+                  component={Item.Banana}
+                  fruitHeight={['45px']}
+                />
+                <GroceryItem
+                  name="orange"
+                  setSelection={setSelection}
+                  component={Item.Orange}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="potato"
+                  setSelection={setSelection}
+                  component={Item.Potato}
+                  fruitHeight={['30px']}
+                />
+              </Box>
+              <Box css={shelfStyles} pt={'1.3rem'}>
+                <GroceryItem
+                  name="apple"
+                  setSelection={setSelection}
+                  component={Item.Apple}
+                  fruitHeight={['30px']}
+                />
+                <GroceryItem
+                  name="banana"
+                  setSelection={setSelection}
+                  component={Item.Banana}
+                  fruitHeight={['40px']}
+                />
+                <GroceryItem
+                  name="orange"
+                  setSelection={setSelection}
+                  component={Item.Orange}
+                  fruitHeight={['35px']}
+                />
+              </Box>
+              <Box css={shelfStyles} pt={'2.9rem'}>
+                <GroceryItem
+                  name="apple"
+                  setSelection={setSelection}
+                  component={Item.Apple}
+                  fruitHeight={['30px']}
+                />
+                <GroceryItem
+                  name="banana"
+                  setSelection={setSelection}
+                  component={Item.Banana}
+                  fruitHeight={['40px']}
+                />
+                <GroceryItem
+                  name="orange"
+                  setSelection={setSelection}
+                  component={Item.Orange}
+                  fruitHeight={['35px']}
+                />
+              </Box>
+            </Stall>
+            <Stall color="red">
+              {/*<Box css={shelfStyles} className="row-2"></Box>*/}
+              {/*<Box css={shelfStyles} className="row-3"></Box>*/}
+            </Stall>
           </Box>
         </Box>
       </GroceryStoreWrapper>
