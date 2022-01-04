@@ -45,9 +45,6 @@ function Navbar() {
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing="1rem">
             <Link to="/">Home</Link>
-            <Link to="/sample">Redux Button</Link>
-            <Link to="/currency-converter">Currency Converter</Link>
-            <Link to="/shopping">Shopping</Link>
           </HStack>
 
           <Flex alignItems={'center'}>
@@ -84,7 +81,6 @@ function Navbar() {
                   <br />
                   <MenuDivider />
                   <MenuItem><Link to="/currency-converter">Currency Converter</Link></MenuItem>
-                  <MenuItem>placeholder</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>
