@@ -19,6 +19,7 @@ import {
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { css } from '@emotion/react';
 import useGeolocation from '../../hooks/useGeolocation'
+import { ArrowBackIcon } from '@chakra-ui/icons'
 
 
 const navbarStyles = css`
@@ -44,7 +45,8 @@ function Navbar() {
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing="1rem">
-            <Link to="/">Home</Link>
+            <Link to="/"> <ArrowBackIcon w={9} h={9} /> </Link>
+            {/* <Link to="/currency-converter">Currency Converter</Link> */}
           </HStack>
 
           <Flex alignItems={'center'}>
