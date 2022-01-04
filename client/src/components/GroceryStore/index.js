@@ -19,7 +19,7 @@ import { GroceryItem } from '../index';
 import { countryAcronyms } from '../../data/countryAcronyms';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
-import { InfoIcon } from '@chakra-ui/icons'
+import { InfoIcon, ArrowForwardIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom';
 
 const shelfStyles = css`
@@ -99,6 +99,7 @@ const signWrapper = css`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
   }
 `;
 
@@ -141,12 +142,12 @@ const GroceryStore = () => {
           <FormControl onSubmit={handleSubmit(handleOnSubmit)}>
             <HStack className="hstack">
               <Box className="select" sx={{ color: 'black !important' }}>
-                <FormLabel htmlFor="firstCountry" mr={2}>
+                <FormLabel display={['none', null, null, 'block']} htmlFor="firstCountry" mr={2}>
                   I am from
                 </FormLabel>
                 <Select
                   {...register('initialCountry')}
-                  maxW="200px"
+                  maxW={['100px', "200px"]}
                   id="initialCountry"
                   placeholder="Select country"
                   onChange={handleFirstCountry}
@@ -156,8 +157,9 @@ const GroceryStore = () => {
                     return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
-                .
-                <FormLabel htmlFor="secondCountry" ml={2} mr={2}>
+                <Text display={['none', null, null, 'inline']}>.</Text>
+                <ArrowForwardIcon display={['block', null, null, 'none']}/>
+                <FormLabel display={['none', null, null, 'block']} htmlFor="secondCountry" ml={2} mr={2}>
                   How much would my groceries cost in
                 </FormLabel>
                 <Select
@@ -172,9 +174,9 @@ const GroceryStore = () => {
                     return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
-                ?
+                <Text display={['none', null, null, 'inline']}>?</Text>
               </Box>
-              <Box textAlign="center">
+              {/* <Box textAlign="center">
                 <Button
                   colorScheme="teal"
                   variant="solid"
@@ -184,27 +186,30 @@ const GroceryStore = () => {
                 >
                   Let's go!
                 </Button>
-              </Box>
+              </Box> */}
             </HStack>
           </FormControl>
         </Box>
         <Box
           sx={{ color: 'black !important' }}
           pos="absolute"
-          top="10%"
-          left="12.45rem"
-          width="84%"
+          top={['8.8%']}
+          left={['4rem', null, null, "12.45rem"]}
+          width="90%"
           display="flex"
           alignItems="center"
           justifyContent="space-evenly"
+          flexDir={['horizontal', null, 'vertical']}
         >
           <Box
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            height={['260px']}
+            // height={['22rem']}
+            width={['10rem', null, '17rem', '20rem', '25rem']}
           >
             <Box
+              padding={5}
               className="sign"
               width="80%"
               height="50%"
@@ -228,9 +233,10 @@ const GroceryStore = () => {
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            height={['260px']}
+            width={['10rem', null, '17rem', '20rem', '25rem']}
           >
             <Box
+              padding={5}
               className="sign"
               width="80%"
               height="50%"
@@ -238,9 +244,8 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              
               <Text>
-                <b>{selection}</b> <Link to="/item-details"><InfoIcon/></Link>
+                <b>{selection}</b> <Link to="/item-details">(More info)<InfoIcon/></Link>
                 <br></br>
                 Most expensive:
                 <br></br>
@@ -253,8 +258,8 @@ const GroceryStore = () => {
             </Box>
           </Box>
         </Box>
-
         <Box
+          flexDir={['horizontal', null, 'vertical']}
           width="100%"
           pos="absolute"
           display="flex"
@@ -267,10 +272,12 @@ const GroceryStore = () => {
             src={Item.Cart}
             alt="cart"
             zIndex="3"
-            maxW={['200px', '300px', null, null, null]}
+            maxW={['150px', '200px', null, null, null]}
           />
           <Box
+            height={'100%'}
             className="stall-container"
+            flexDir={['column', null, 'row']}
             pos="relative"
             maxW={[null, null, '600px', '750px', '900px']}
             mb={['1rem']}
