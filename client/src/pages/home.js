@@ -43,13 +43,6 @@ const Home = () => {
             padding="1rem"
             borderRadius="8px"
           >
-            {/*name box*/}
-            <Box border="2px solid black" borderRadius="8px" mb="20px">
-              <FormControl padding="1rem">
-                <FormLabel htmlFor="name">Hi! My name is:</FormLabel>
-                <Input id="name" placeholder="Name" border="1px solid black" />
-              </FormControl>
-            </Box>
             {/*from country box*/}
             <Box border="2px solid black" borderRadius="8px" mb="20px">
               <FormControl padding="1rem">
@@ -87,7 +80,7 @@ const Home = () => {
               </Button>
             </Box>
             {/*check out all the items button*/}
-            <Box
+            {/* <Box
               border="2px solid black"
               borderRadius="8px"
               mb="20px"
@@ -95,9 +88,9 @@ const Home = () => {
               backgroundColor="#cddafd"
             >
               Check out where each item is the most expensive!
-            </Box>
+            </Box> */}
             {/*salary button*/}
-            <Box
+            {/* <Box
               border="2px solid black"
               borderRadius="8px"
               mb="20px"
@@ -105,7 +98,7 @@ const Home = () => {
               backgroundColor="#cddafd"
             >
               Check out how much your salary is worth in different countries!
-            </Box>
+            </Box> */}
           </Box>
           <Box background="#90E0EF" minWidth="400px" height="100%" mx={4} />
         </Box>

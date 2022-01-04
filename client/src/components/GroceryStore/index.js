@@ -1,5 +1,10 @@
 import React from 'react';
-import { Box, Image } from '@chakra-ui/react';
+import { 
+    Box,
+    Image,
+    FormControl,
+    Stack
+} from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -65,6 +70,9 @@ const GroceryStore = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <GroceryStoreWrapper background="white">
+        <FormControl>
+          <Stack></Stack>
+        </FormControl>
         <Image
           className="supermarket"
           src={Item.Supermarket}
@@ -125,26 +133,6 @@ const GroceryStore = () => {
           </Box>
         </Box>
       </GroceryStoreWrapper>
-      {/*<Box css={wrapper}>*/}
-      {/*</Box>*/}
-      {/*<Box*/}
-      {/*  css={wrapper}*/}
-      {/*  display="flex"*/}
-      {/*  alignItems="center"*/}
-      {/*  justifyContent="center"*/}
-      {/*>*/}
-      {/*  <Box css={fruitsContainer} p={4}>*/}
-      {/*    {items.map((item, index) => (*/}
-      {/*      <GroceryItem*/}
-      {/*        key={index}*/}
-      {/*        id={index}*/}
-      {/*        name={item.name}*/}
-      {/*        component={item.component}*/}
-      {/*      />*/}
-      {/*    ))}*/}
-      {/*  </Box>*/}
-      {/*  <Basket />*/}
-      {/*</Box>*/}
     </DndProvider>
   );
 };

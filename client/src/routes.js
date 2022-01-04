@@ -10,10 +10,11 @@ import {
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Shopping/>} />
       <Route path="/sample" element={<Sample />} />
       <Route path="/currency-converter" element={<CurrencyConverter />} />
-      <Route path="/shopping" element={<Shopping />} />
+      <Route path="/home" element={<Home />} />
+
     </Routes>
   );
 };
