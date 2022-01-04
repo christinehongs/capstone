@@ -251,6 +251,7 @@ const GroceryStore = () => {
             mb={['1rem']}
           >
             <Stall color="green">
+              {/*Fresh stall row 1*/}
               <Box css={shelfStyles} pt={'7.6rem'}>
                 <GroceryItem
                   name="apple"
@@ -277,50 +278,146 @@ const GroceryStore = () => {
                   fruitHeight={['30px']}
                 />
               </Box>
-              <Box css={shelfStyles} pt={'1.3rem'}>
+              {/*Fresh stall row 2*/}
+              <Box css={shelfStyles} pt={'0.9rem'}>
                 <GroceryItem
-                  name="apple"
+                  name="onion"
                   setSelection={setSelection}
-                  component={Item.Apple}
-                  fruitHeight={['30px']}
+                  component={Item.Onion}
+                  fruitHeight={['41px']}
                 />
                 <GroceryItem
-                  name="banana"
+                  name="tomato"
                   setSelection={setSelection}
-                  component={Item.Banana}
-                  fruitHeight={['40px']}
+                  component={Item.Tomato}
+                  fruitHeight={['47px']}
                 />
                 <GroceryItem
-                  name="orange"
+                  name="bread"
                   setSelection={setSelection}
-                  component={Item.Orange}
+                  component={Item.Bread}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="bread"
+                  setSelection={setSelection}
+                  component={Item.Bread}
                   fruitHeight={['35px']}
                 />
               </Box>
-              <Box css={shelfStyles} pt={'2.9rem'}>
+              {/*Fresh stall row 3*/}
+              <Box css={shelfStyles} pt={'1.8rem'}>
                 <GroceryItem
-                  name="apple"
+                  name="rice"
                   setSelection={setSelection}
-                  component={Item.Apple}
-                  fruitHeight={['30px']}
+                  component={Item.Rice}
+                  fruitHeight={['60px']}
                 />
                 <GroceryItem
-                  name="banana"
+                  name="rice"
                   setSelection={setSelection}
-                  component={Item.Banana}
-                  fruitHeight={['40px']}
+                  component={Item.Rice}
+                  fruitHeight={['60px']}
                 />
                 <GroceryItem
-                  name="orange"
+                  name="rice"
                   setSelection={setSelection}
-                  component={Item.Orange}
-                  fruitHeight={['35px']}
+                  component={Item.Rice}
+                  fruitHeight={['60px']}
                 />
               </Box>
             </Stall>
             <Stall color="red">
-              {/*<Box css={shelfStyles} className="row-2"></Box>*/}
-              {/*<Box css={shelfStyles} className="row-3"></Box>*/}
+              {/*Fridge stall row 1*/}
+              <Box css={shelfStyles} pt={'6rem'}>
+                <GroceryItem
+                  name="cheese"
+                  setSelection={setSelection}
+                  component={Item.Cheese}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="cheese"
+                  setSelection={setSelection}
+                  component={Item.Cheese}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="eggs"
+                  setSelection={setSelection}
+                  component={Item.Eggs}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="eggs"
+                  setSelection={setSelection}
+                  component={Item.Eggs}
+                  fruitHeight={['35px']}
+                />
+                <GroceryItem
+                  name="chicken"
+                  setSelection={setSelection}
+                  component={Item.Chicken}
+                  fruitHeight={['53px']}
+                />
+                <GroceryItem
+                  name="meat"
+                  setSelection={setSelection}
+                  component={Item.Meat}
+                  fruitHeight={['53px']}
+                />
+              </Box>
+              {/*Fridge stall row 2*/}
+              <Box css={shelfStyles} pt={'1.8rem'}>
+                <Box width="100%" display="flex" justifyContent="center">
+                  <GroceryItem
+                    name="wine"
+                    setSelection={setSelection}
+                    component={Item.Wine}
+                    fruitHeight={['50px']}
+                  />
+                  <GroceryItem
+                    name="beer"
+                    setSelection={setSelection}
+                    component={Item.Beer}
+                    fruitHeight={['55px']}
+                  />
+                </Box>
+                <Box width="100%" display="flex" justifyContent="center">
+                  <GroceryItem
+                    name="water bottle"
+                    setSelection={setSelection}
+                    component={Item.Water}
+                    fruitHeight={['55px']}
+                  />
+                  <GroceryItem
+                    name="water bottle"
+                    setSelection={setSelection}
+                    component={Item.Water}
+                    fruitHeight={['55px']}
+                  />
+                  <GroceryItem
+                    name="water bottle"
+                    setSelection={setSelection}
+                    component={Item.Water}
+                    fruitHeight={['55px']}
+                  />
+                </Box>
+                <Box width="100%" display="flex" justifyContent="center">
+                  <GroceryItem
+                    name="milk"
+                    setSelection={setSelection}
+                    component={Item.Milk}
+                    fruitHeight={['60px']}
+                  />
+                  <GroceryItem
+                    name="milk"
+                    setSelection={setSelection}
+                    component={Item.Milk}
+                    fruitHeight={['60px']}
+                  />
+                </Box>
+              </Box>
             </Stall>
           </Box>
         </Box>
