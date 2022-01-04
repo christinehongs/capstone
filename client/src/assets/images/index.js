@@ -19,3 +19,4 @@ export { default as Tomato } from './tomato.svg';
 export { default as Tray } from './tray.svg';
 export { default as Water } from './water-bottle.svg';
 export { default as Wine } from './wine.svg';
+export { default as Sign } from './sign.svg';
