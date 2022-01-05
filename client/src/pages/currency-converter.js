@@ -102,19 +102,6 @@ export default function CurrencyConverter({ currency, setCurrency }) {
 
   return (
     <ConverterWrapper>
-      {/*<Heading mb={4}>Currency Converter</Heading>*/}
-      {/*<Converter*/}
-      {/*  data={data}*/}
-      {/*  money={money}*/}
-      {/*  onMoneyChangeFrom={onMoneyChangeFrom}*/}
-      {/*  onMoneyChangeTo={onMoneyChangeTo}*/}
-      {/*  firstInput={firstInput}*/}
-      {/*  secondInput={secondInput}*/}
-      {/*  toAmount={toAmount}*/}
-      {/*  fromAmount={fromAmount}*/}
-      {/*  handleFromCurreny={handleFromCurrency}*/}
-      {/*  handleToCurrency={handleToCurrency}*/}
-      {/*/>*/}
       <Stack alignItems={'center'}>
         {/*<div>*/}
         {/*  {fromAmount} {firstInput} <h1>=</h1>*/}

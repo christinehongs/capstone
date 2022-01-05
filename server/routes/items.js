@@ -1,51 +1,74 @@
-import lodash from 'lodash';
-
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 dotenv.config();
-// import { Item } from '../models/item.js';
-
 const itemsRouter = express.Router();
-
 const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
-
 const database = client.db('capstone');
 const items = database.collection('items');
 
-// MongoClient.connect(client, async () => {
-//   // assert.equal(null, err);
-//   try {
-//     await client.connect();
-//
-//     // await listDatabases(client);
-//     const allItems = await items.find();
-//     const itemsWithDups = allItems.map((item) => item.name);
-//
-//     const allItemNames = lodash
-//       .chain(itemsWithDups)
-//       .uniq()
-//       .orderBy((city) => city.toLowerCase())
-//       .value();
-//
-//     console.log(allItemNames.length);
-//   } catch (e) {
-//     console.error(e);
-//   }
-// });
+itemsRouter.use(cors());
+itemsRouter.use(bodyParser.json());
+itemsRouter.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
-// itemsRouter.get('/items', async (_, res) => {
-//   const allItems = await items.find();
-//   const itemsWithDups = allItems.map((item) => item.name);
-//
-//   const allItemNames = lodash
-//     .chain(itemsWithDups)
-//     .uniq()
-//     .orderBy((city) => city.toLowerCase())
-//     .value();
-//
-//   res.send(allItemNames);
-// });
+let allItems;
+
+itemsRouter.post('/items', (req, res) => {
+  allItems = req.body;
+});
+
+itemsRouter.get('/items', async (req, res) => {
+  let itemsPriceData = null;
+
+  async function findItems(client, itemName) {
+    console.log(itemName);
+    const result = await client
+      .db('capstone')
+      .collection('items')
+      .find({
+        name: `${itemName}`,
+      })
+      .toArray();
+    if (result) {
+      return result;
+    } else {
+    }
+  }
+
+  // const allItems = await items.find();
+
+  MongoClient.connect(client, async () => {
+    try {
+      await client.connect();
+      if (allItems !== undefined) {
+        for (let i = 0; i < allItems.length; i++) {
+          await findItems(client, allItems[i].item)
+            .then((res) => {
+              console.log(res);
+              itemsPriceData = res;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        res.json(itemsPriceData);
+      } else {
+        console.log('no items');
+        res.end();
+      }
+
+      // console.log(itemsPriceData);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+});
 
 export default itemsRouter;

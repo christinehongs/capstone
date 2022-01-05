@@ -22,7 +22,6 @@ import { GroceryItem } from '../index';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
 import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons';
-// import { Converter } from '../index';
 import { CurrencyConverter } from '../../pages';
 import {
   formWrapper,
@@ -57,10 +56,6 @@ const GroceryStore = () => {
   //   }),
   // }));
 
-  // const { data, isFetching } = useQuery('cities', () => {
-  //   fetch('http://127.0.0.1:3001/cities').then((res) => res.json());
-  // });
-
   const {
     register,
     handleSubmit,
@@ -74,7 +69,8 @@ const GroceryStore = () => {
     setSelectedCity(e.target.value);
   }
 
-  const handlePostCartData = () => {
+  const handlePostCartData = (e) => {
+    e.preventDefault();
     console.log(cartItems.length);
     if (cartItems.length > 1) {
       axios
@@ -88,7 +84,7 @@ const GroceryStore = () => {
           }
         )
         .then(function (response) {
-          console.log(response);
+          console.log('cart response:', response);
         })
         .catch(function (error) {
           console.log(error);
@@ -100,22 +96,23 @@ const GroceryStore = () => {
 
   const handleOnSubmit = () => {};
 
-  React.useEffect(() => {
-    setCartItems([...cartItems, selection]);
-  }, [selection]);
+  // React.useEffect(() => {
+  //   setCartItems([...cartItems, selection]);
+  //   console.log(selection);
+  // }, [selection]);
+
+  // React.useEffect(() => {
+  //   console.log(cartItems.slice(1));
+  // }, [cartItems]);
 
   React.useEffect(() => {
-    cartItems.length > 0 && console.log(cartItems.slice(1));
-  }, [cartItems]);
-
-  React.useEffect(() => {
-    console.log('cities:', citiesLoading);
+    // console.log('cities:', citiesLoading);
     citiesData && setCitiesList(citiesData);
   }, [citiesData, citiesLoading]);
 
   React.useEffect(() => {
-    console.log('cart:', cartDataLoading);
-    cartData && console.log(cartData[0]);
+    // console.log('cart:', cartDataLoading);
+    // cartData && console.log(cartData[0]);
   }, [cartData, cartDataLoading]);
 
   return (
@@ -229,7 +226,7 @@ const GroceryStore = () => {
                     boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
                   >
                     <Tr>
-                      <Th>City, Country</Th>
+                      <Th>Items in Cart</Th>
                       <Th>Price</Th>
                     </Tr>
                   </Thead>
@@ -242,12 +239,17 @@ const GroceryStore = () => {
                           </Tr>
                         ))
                       : null}
+                    <Tr position="sticky" width="100%" px={3}>
+                      <td>
+                        Total: (<span className="bold">{currency}</span>)
+                      </td>
+                    </Tr>
                   </Tbody>
                 </Table>
               )}
-              <Text>
-                Total: (<span className="bold">{currency}</span>)
-              </Text>
+              {/*<Text>*/}
+              {/*  Total: (<span className="bold">{currency}</span>)*/}
+              {/*</Text>*/}
             </Box>
           </Box>
           {/*<Box*/}
@@ -293,6 +295,7 @@ const GroceryStore = () => {
               >
                 <GroceryItem
                   name="apples"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Apple}
@@ -300,6 +303,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bananas"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Banana}
@@ -307,6 +311,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="oranges"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Orange}
@@ -314,6 +319,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="potato"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Potato}
@@ -324,6 +330,7 @@ const GroceryStore = () => {
               <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
                 <GroceryItem
                   name="onions"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Onion}
@@ -331,6 +338,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="tomato"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Tomato}
@@ -338,6 +346,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bread"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Bread}
@@ -345,6 +354,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bread"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Bread}
@@ -355,6 +365,7 @@ const GroceryStore = () => {
               <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem']}>
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -362,6 +373,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -369,6 +381,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -384,6 +397,7 @@ const GroceryStore = () => {
               >
                 <GroceryItem
                   name="cheese"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Cheese}
@@ -391,6 +405,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="cheese"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Cheese}
@@ -398,6 +413,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="eggs"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Eggs}
@@ -405,6 +421,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="eggs"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Eggs}
@@ -412,6 +429,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="chicken"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Chicken}
@@ -419,6 +437,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="meat"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Meat}
@@ -430,6 +449,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Wine}
@@ -437,6 +457,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="beer"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Beer}
@@ -446,6 +467,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -453,6 +475,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -460,6 +483,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -469,6 +493,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="milk"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Milk}
@@ -476,6 +501,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="milk"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Milk}

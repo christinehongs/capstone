@@ -60,7 +60,7 @@ cartRouter.get('/cart', async (req, res) => {
         }
         res.json(cartPriceData);
       } else {
-        console.log('test');
+        console.log('cart empty');
         res.end();
       }
 
