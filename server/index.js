@@ -1,5 +1,4 @@
 import express from 'express';
-
 // import { connectDb } from './config/mongoose';
 import { MongoClient } from 'mongodb';
 import citiesRouter from './routes/cities';
@@ -8,6 +7,16 @@ import cartRouter from './routes/items';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+const app = express();
+
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(citiesRouter);
+app.use(itemsRouter);
+app.use(cartRouter);
 
 const uriEndpoint = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 // const database = uriEndpoint.db('capstone');
@@ -51,15 +60,6 @@ MongoClient.connect(uriEndpoint, async () => {
   }
 });
 
-const app = express();
-
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-app.use(citiesRouter);
-app.use(itemsRouter);
-app.use(cartRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {

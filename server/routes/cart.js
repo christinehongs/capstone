@@ -12,7 +12,7 @@ const items = database.collection('items');
 
 cartRouter.get('/cart', async (req, res) => {
   const allItems = await items.find();
-
+  // res.send(allItems)
   console.log(allItems);
 });
 

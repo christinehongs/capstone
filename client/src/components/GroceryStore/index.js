@@ -119,7 +119,7 @@ const GroceryStore = () => {
                 {/*<Text display={['none', null, null, 'inline']}>.</Text>*/}
                 <ArrowForwardIcon display={['block', null, null, 'none']} />
                 <FormLabel
-                  display={['none', null, null, 'block']}
+                  display={['none', 'none', null, 'block']}
                   htmlFor="secondCountry"
                   ml={2}
                   mr={2}
@@ -133,6 +133,7 @@ const GroceryStore = () => {
                   value={selectedCity}
                   onChange={handleSecondCountry}
                   mr={1}
+                  placeholder={['Select City']}
                 >
                   {data &&
                     !loading &&
@@ -141,7 +142,7 @@ const GroceryStore = () => {
                     })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
-                <Button onClick={() => setCartData([])}>Clear Cart</Button>
+                <Button minW={'5rem'} onClick={() => setCartData([])}>Clear Cart</Button>
               </Box>
               {/* <Box textAlign="center">
                 <Button
@@ -172,7 +173,7 @@ const GroceryStore = () => {
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            width={['12rem', null, '17rem', null, '25rem']}
+            width={['12rem', '17rem', '20rem', null, '25rem']}
           >
             <Box
               padding={4}
@@ -225,7 +226,8 @@ const GroceryStore = () => {
               {/*Fresh stall row 1*/}
               <Box
                 css={shelfStyles}
-                pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}
+                pt={[null, null, '4.4rem', '8.8rem', '10.6rem']}
+                height={['7.4rem', null, null, null, null]}
               >
                 <GroceryItem
                   name="apple"
@@ -257,7 +259,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 2*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
+              <Box css={shelfStyles} height={['2.6rem', null, null, null, null]} pt={[null, null, null, '3.2rem', '3.7rem']}>
                 <GroceryItem
                   name="onion"
                   selectedCity={selectedCity}
@@ -288,7 +290,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 3*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem']}>
+              <Box css={shelfStyles} pt={[null, null, null, '.6rem', '1.6rem']}>
                 <GroceryItem
                   name="rice"
                   selectedCity={selectedCity}
@@ -316,7 +318,8 @@ const GroceryStore = () => {
               {/*Fridge stall row 1*/}
               <Box
                 css={shelfStyles}
-                pt={[null, null, '2.7rem', '4rem', '5.3rem']}
+                pt={[null, null, '2.7rem', '7.2rem', '8.7rem']}
+                height={['6rem', null, null, null, null]}
               >
                 <GroceryItem
                   name="cheese"
@@ -362,7 +365,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fridge stall row 2*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '1.4rem']}>
+              <Box css={shelfStyles} height={['3.7rem', null, null, null, null]} pt={[null, null, null, '4.3rem', '5.2rem']}>
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"

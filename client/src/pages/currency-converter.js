@@ -122,7 +122,7 @@ export default function CurrencyConverter({ currency, setCurrency }) {
         {/*    {toAmount} {secondInput}*/}
         {/*  </Text>*/}
         {/*</div>*/}
-        <HStack mr={5}>
+        <HStack mr={[null, null, null, '4rem', '5rem']}>
           {/*<Input*/}
           {/*  type="number"*/}
           {/*  value={fromAmount >= 1000000000 ? 1000000000 : fromAmount}*/}
@@ -134,6 +134,7 @@ export default function CurrencyConverter({ currency, setCurrency }) {
             Select Currency:
           </FormLabel>
           <Select
+            minW={'5rem'}
             id="select-currency"
             value={currency}
             onChange={handleFromCurrency}
