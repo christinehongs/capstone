@@ -1,7 +1,5 @@
 import lodash from 'lodash';
-
-import { connectDb } from '../config/mongoose.js';
-import { Item } from '../models/item.js'
+import { db } from '../config/firestore.js';
 
 import { bananas1kg } from '../data/bananas1kg.js';
 import { milk1Liter } from '../data/milk.js';
@@ -21,8 +19,6 @@ import { waterBottleOneAndHalfLiterBottle } from '../data/waterBottle.js';
 import { eggsDozen } from '../data/eggs.js';
 import { localCheese1kg } from '../data/localCheese.js';
 import { apples1kg } from '../data/apples1kg.js';
-
-const db = connectDb();
 
 const itemsObj = {
   bananas1kg,
@@ -50,7 +46,6 @@ const allItems = [];
 for (const [itemName, itemList] of Object.entries(itemsObj)) {
   itemList.forEach((itemDetails, index) => {
     allItems.push({
-      _id: `${itemName}-${lodash.camelCase(itemDetails.city)}`,
       name: itemName,
       city: itemDetails.city,
       price: itemDetails.price,
@@ -60,7 +55,24 @@ for (const [itemName, itemList] of Object.entries(itemsObj)) {
 }
 
 (async () => {
-  // If you run this script twice, it'll fail because the IDs will be duplicates
-  await Item.collection.insertMany(allItems);
-  db.close();
-})()
+  let batch = db.batch();
+  let count = 0;
+
+  for (let index = 0; index < allItems.length; index++) {
+    count = index + 1;
+    const item = allItems[index];
+    const itemId = `${item.name}-${lodash.camelCase(item.city)}`;
+
+    const itemRef = db.collection('items').doc(itemId);
+    batch.set(itemRef, item);
+
+    if (count % 500 === 0) {
+      console.log(`Batching ${count}`);
+      await batch.commit();
+      batch = db.batch();
+    }
+  }
+
+  console.log(`Batching ${count}`);
+  await batch.commit();
+})();

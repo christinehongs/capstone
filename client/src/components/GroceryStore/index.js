@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -19,7 +18,7 @@ import { GroceryItem } from '../index';
 import { countryAcronyms } from '../../data/countryAcronyms';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
-import { InfoIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 
 const shelfStyles = css`
@@ -95,7 +94,7 @@ const signWrapper = css`
 
   .sign {
     box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    background-color: #EDBE85;
+    background-color: #edbe85;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,9 +102,8 @@ const signWrapper = css`
   }
 `;
 
-
 const GroceryStore = () => {
-
+  const [cart, setCart] = React.useState([]);
   const [selection, setSelection] = React.useState('');
   const [firstCountry, setFirstCountry] = React.useState('');
   const [secondCountry, setSecondCountry] = React.useState('');
@@ -130,6 +128,14 @@ const GroceryStore = () => {
 
   const handleOnSubmit = () => {};
 
+  React.useEffect(() => {
+    setCart([...cart, selection]);
+  }, [selection]);
+
+  React.useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <GroceryStoreWrapper
@@ -142,12 +148,16 @@ const GroceryStore = () => {
           <FormControl onSubmit={handleSubmit(handleOnSubmit)}>
             <HStack className="hstack">
               <Box className="select" sx={{ color: 'black !important' }}>
-                <FormLabel display={['none', null, null, 'block']} htmlFor="firstCountry" mr={2}>
+                <FormLabel
+                  display={['none', null, null, 'block']}
+                  htmlFor="firstCountry"
+                  mr={2}
+                >
                   I am from
                 </FormLabel>
                 <Select
                   {...register('initialCountry')}
-                  maxW={["200px"]}
+                  maxW={['200px']}
                   id="initialCountry"
                   placeholder="Select country"
                   onChange={handleFirstCountry}
@@ -158,13 +168,18 @@ const GroceryStore = () => {
                   })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>.</Text>
-                <ArrowForwardIcon display={['block', null, null, 'none']}/>
-                <FormLabel display={['none', null, null, 'block']} htmlFor="secondCountry" ml={2} mr={2}>
+                <ArrowForwardIcon display={['block', null, null, 'none']} />
+                <FormLabel
+                  display={['none', null, null, 'block']}
+                  htmlFor="secondCountry"
+                  ml={2}
+                  mr={2}
+                >
                   How much would my groceries cost in
                 </FormLabel>
                 <Select
                   {...register('secondaryCountry')}
-                  maxW={["200px"]}
+                  maxW={['200px']}
                   id="secondaryCountry"
                   placeholder="Select country"
                   onChange={handleSecondCountry}
@@ -194,7 +209,7 @@ const GroceryStore = () => {
           sx={{ color: 'black !important' }}
           pos="absolute"
           top={['8.8%']}
-          left={['2rem', null, null, "12.45rem"]}
+          left={['2rem', null, null, '12.45rem']}
           width="90%"
           display="flex"
           alignItems="center"
@@ -217,15 +232,15 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              <Text bg='#EDBE85'>
+              <Text bg="#EDBE85">
                 Currently shopping in:
                 <b>{secondCountry}!</b>
                 <br></br>
                 Total cost in cart:
-                <br></br>(<b>{firstCountry}</b>): (first country currency(acryonym)
-                total)
-                <br></br>(<b>{secondCountry}</b>): (second country currency(acryonym)
-                total)
+                <br></br>(<b>{firstCountry}</b>): (first country
+                currency(acryonym) total)
+                <br></br>(<b>{secondCountry}</b>): (second country
+                currency(acryonym) total)
               </Text>
             </Box>
           </Box>
@@ -245,7 +260,11 @@ const GroceryStore = () => {
               borderRadius="5px"
             >
               <Text>
-                <b>{selection}</b> <Link to="/item-details">(More info)<InfoIcon/></Link>
+                <b>{selection}</b>{' '}
+                <Link to="/item-details">
+                  (More info)
+                  <InfoIcon />
+                </Link>
                 <br></br>
                 Most expensive:
                 <br></br>
