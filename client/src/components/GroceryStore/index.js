@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -158,6 +159,9 @@ const GroceryStore = () => {
                     })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
+                <Button minW={'5rem'} onClick={() => setCartItems([])}>
+                  Clear Cart
+                </Button>
               </Box>
               {/* <Box textAlign="center">
                 <Button
@@ -321,7 +325,11 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 2*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
+              <Box
+                css={shelfStyles}
+                height={['2.6rem', null, null, null, null]}
+                pt={[null, null, null, '3.2rem', '3.7rem']}
+              >
                 <GroceryItem
                   name="onions"
                   selectedCity={selectedCity}
@@ -352,7 +360,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 3*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem']}>
+              <Box css={shelfStyles} pt={[null, null, null, '.6rem', '1.6rem']}>
                 <GroceryItem
                   name="rice"
                   selectedCity={selectedCity}
@@ -380,7 +388,8 @@ const GroceryStore = () => {
               {/*Fridge stall row 1*/}
               <Box
                 css={shelfStyles}
-                pt={[null, null, '2.7rem', '4rem', '5.3rem']}
+                pt={[null, null, '2.7rem', '7.2rem', '8.7rem']}
+                height={['6rem', null, null, null, null]}
               >
                 <GroceryItem
                   name="cheese"
@@ -426,7 +435,11 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fridge stall row 2*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '1.4rem']}>
+              <Box
+                css={shelfStyles}
+                height={['3.7rem', null, null, null, null]}
+                pt={[null, null, null, '4.3rem', '5.2rem']}
+              >
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"
