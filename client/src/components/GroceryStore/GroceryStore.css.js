@@ -72,15 +72,14 @@ export const formWrapper = css`
 
 export const signWrapper = css`
   position: relative;
-  //top: 5rem;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   aspect-ratio: 8 / 7;
 
   .sign {
-    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    background-color: #edbe85;
+    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: flex-start;
     justify-content: center;

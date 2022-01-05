@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -16,7 +15,7 @@ import { Supermarket } from '../../assets/images';
 import { GroceryItem } from '../index';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons';
 // import { Converter } from '../index';
 import { CurrencyConverter } from '../../pages';
 import {
@@ -75,15 +74,23 @@ const GroceryStore = () => {
     setSelectedCity(e.target.value);
   }
 
-  const handleGetItem = () => {
-    axios
-      .post('/cart', cartData)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const handlePostCartData = () => {
+    if (cartData.length > 1) {
+      axios
+        .post('http://localhost:3001/cart', JSON.stringify(cartData.slice(1)), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      console.log('cart is empty');
+    }
   };
 
   const handleOnSubmit = () => {};
@@ -141,7 +148,6 @@ const GroceryStore = () => {
                     })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
-                <Button onClick={() => setCartData([])}>Clear Cart</Button>
               </Box>
               {/* <Box textAlign="center">
                 <Button
@@ -175,6 +181,7 @@ const GroceryStore = () => {
             width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
+              pos="relative"
               padding={4}
               className="sign"
               width="80%"
@@ -183,9 +190,19 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              <Text bg="#EDBE85">
+              <Text>
                 Total: (<span className="bold">{currency}</span>)
               </Text>
+              {cartData.length > 1 ? (
+                <DeleteIcon
+                  onClick={() => setCartData([])}
+                  pos="absolute"
+                  top={2}
+                  right={2}
+                  opacity={cartData.length === 1 ? 0.4 : 1}
+                  cursor={cartData.length > 1 ? 'pointer' : 'none'}
+                />
+              ) : null}
             </Box>
           </Box>
           {/*<Box*/}
@@ -206,12 +223,14 @@ const GroceryStore = () => {
           bottom={'1rem'}
         >
           <Image
+            onClick={handlePostCartData}
             role={'cart'}
             className="cart"
             src={Item.Cart}
             alt="cart"
             zIndex="3"
             maxW={['150px', '230px', null, null, '20rem']}
+            cursor={cartData.length > 1 ? 'pointer' : 'default'}
           />
           <Box
             height={'100%'}

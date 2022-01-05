@@ -4,14 +4,35 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import citiesRouter from './routes/cities';
 import itemsRouter from './routes/items';
-import cartRouter from './routes/items';
+import cartRouter from './routes/cart';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
+const app = express();
 const uriEndpoint = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
-// const database = uriEndpoint.db('capstone');
-// const items = database.collection('items');
+
+app.options('*', cors());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('public'));
+
+app.use(citiesRouter);
+app.use(itemsRouter);
+app.use(cartRouter);
+
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   req.setTimeout(10000);
+//   next();
+// });
 
 async function findOneListingByName(client, nameOfListing) {
   const result = await client
@@ -50,16 +71,6 @@ MongoClient.connect(uriEndpoint, async () => {
     console.error(e);
   }
 });
-
-const app = express();
-
-app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-app.use(citiesRouter);
-app.use(itemsRouter);
-app.use(cartRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
