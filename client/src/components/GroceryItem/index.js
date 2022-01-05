@@ -28,26 +28,16 @@ const GroceryItem = ({
     }),
   }));
 
-  const [quantity, setQuantity] = React.useState(0);
+  // const [quantity, setQuantity] = React.useState(1);
 
   const handleOnClick = (e) => {
     e.preventDefault();
-    setQuantity(quantity + 1);
+    // setQuantity(quantity + 1);
     setSelection({
       city: selectedCity,
       item: name,
-      quantity,
     });
-    console.log(selection);
   };
-
-  React.useEffect(() => {
-    setSelection({
-      city: selectedCity,
-      item: name,
-      quantity,
-    });
-  }, [selection]);
 
   return (
     <Box className="item" height={['100%']} maxW={['50px']} pos="relative">

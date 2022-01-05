@@ -5,6 +5,11 @@ import {
   FormLabel,
   HStack,
   Image,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
   Select,
   Table,
   Tbody,
@@ -63,6 +68,20 @@ const GroceryStore = () => {
     formState: { errors },
   } = useForm();
 
+  // const handleConversion = () => {
+  //   let toAmount = 0,
+  //     fromAmount = 1;
+  //   if (moneyFrom) {
+  //     fromAmount = money;
+  //     toAmount = fromAmount * exchangeRate || 0;
+  //     toAmount = toAmount.toFixed(2);
+  //   } else {
+  //     toAmount = money;
+  //     fromAmount = toAmount / exchangeRate;
+  //     fromAmount = fromAmount.toFixed(2);
+  //   }
+  // };
+
   function handleSecondCountry(e) {
     e.preventDefault();
     console.log(e.target.value);
@@ -113,7 +132,34 @@ const GroceryStore = () => {
   React.useEffect(() => {
     // console.log('cart:', cartDataLoading);
     // cartData && console.log(cartData[0]);
-  }, [cartData, cartDataLoading]);
+    axios
+      .post(
+        'http://localhost:3001/items',
+        {
+          city: selectedCity,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(function (response) {
+        console.log('items response:', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [selectedCity]);
+
+  React.useEffect(() => {
+    // selection && console.log(selection);
+    selection && setCartItems([...cartItems, selection]);
+  }, [selection]);
+
+  React.useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -224,17 +270,52 @@ const GroceryStore = () => {
                     top={0}
                     bg="#f6dfc2"
                     boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
+                    zIndex={2}
                   >
                     <Tr>
+                      <Th>#</Th>
                       <Th>Items in Cart</Th>
                       <Th>Price</Th>
                     </Tr>
                   </Thead>
-                  <Tbody boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)">
-                    {cartData
-                      ? cartData.map((item, index) => (
-                          <Tr key={index}>
-                            <Td>{item.city}</Td>
+                  <Tbody
+                    boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)"
+                    zIndex={1}
+                  >
+                    {/*{cartData*/}
+                    {/*  ? cartData.map((item, index) => (*/}
+                    {/*      <Tr key={index}>*/}
+                    {/*        <Td>{item.city}</Td>*/}
+                    {/*        <Td>${item.price}</Td>*/}
+                    {/*      </Tr>*/}
+                    {/*    ))*/}
+                    {/*  : null}*/}
+                    {cartItems
+                      ? cartItems.map((item, index) => (
+                          <Tr key={index} pos="relative" zIndex={1}>
+                            <Td pl={['0.6rem']}>
+                              <Box
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                              >
+                                <DeleteIcon zIndex={2} mr={[3]} />
+
+                                <NumberInput
+                                  maxW={['70px']}
+                                  defaultValue={1}
+                                  min={1}
+                                  max={10}
+                                >
+                                  <NumberInputField bg="white" />
+                                  <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                  </NumberInputStepper>
+                                </NumberInput>
+                              </Box>
+                            </Td>
+                            <Td>{item.item}</Td>
                             <Td>${item.price}</Td>
                           </Tr>
                         ))

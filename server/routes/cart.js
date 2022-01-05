@@ -38,6 +38,7 @@ cartRouter.get('/cart', async (req, res) => {
       })
       .toArray();
     if (result) {
+      // console.log(result);
       return result;
     } else {
     }
@@ -53,6 +54,7 @@ cartRouter.get('/cart', async (req, res) => {
           await findItems(client, cartItems[i].item)
             .then((res) => {
               cartPriceData = res;
+              console.log(cartPriceData);
             })
             .catch((err) => {
               console.log(err);

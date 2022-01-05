@@ -62,17 +62,18 @@ export default function CurrencyConverter({ currency, setCurrency }) {
         });
     }
   }, [currency, secondInput, first, second]);
-  let toAmount = 0,
-    fromAmount = 1;
-  if (moneyFrom) {
-    fromAmount = money;
-    toAmount = fromAmount * exchangeRate || 0;
-    toAmount = toAmount.toFixed(2);
-  } else {
-    toAmount = money;
-    fromAmount = toAmount / exchangeRate;
-    fromAmount = fromAmount.toFixed(2);
-  }
+  // let toAmount = 0;
+  // let fromAmount = 1;
+
+  // if (moneyFrom) {
+  //   fromAmount = money;
+  //   toAmount = fromAmount * exchangeRate || 0;
+  //   toAmount = toAmount.toFixed(2);
+  // } else {
+  //   toAmount = money;
+  //   fromAmount = toAmount / exchangeRate;
+  //   fromAmount = fromAmount.toFixed(2);
+  // }
 
   function onMoneyChangeFrom(e) {
     const value = e.target.value;

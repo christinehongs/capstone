@@ -18,25 +18,29 @@ itemsRouter.use(
   })
 );
 
-let allItems;
+let selectedCity;
 
 itemsRouter.post('/items', (req, res) => {
-  allItems = req.body;
+  selectedCity = req.body;
 });
 
 itemsRouter.get('/items', async (req, res) => {
   let itemsPriceData = null;
 
-  async function findItems(client, itemName) {
-    console.log(itemName);
+  console.log(`selected city: ${selectedCity.city}`);
+
+  async function findItems(client) {
+    // console.log(itemName);
     const result = await client
       .db('capstone')
       .collection('items')
       .find({
-        name: `${itemName}`,
+        // name: `${itemName}`,
+        city: `${selectedCity.city}`,
       })
       .toArray();
     if (result) {
+      console.log(result);
       return result;
     } else {
     }
@@ -47,17 +51,23 @@ itemsRouter.get('/items', async (req, res) => {
   MongoClient.connect(client, async () => {
     try {
       await client.connect();
-      if (allItems !== undefined) {
-        for (let i = 0; i < allItems.length; i++) {
-          await findItems(client, allItems[i].item)
-            .then((res) => {
-              console.log(res);
-              itemsPriceData = res;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
+
+      if (selectedCity !== undefined) {
+        console.log(selectedCity);
+        await findItems(client).then((res) => {
+          itemsPriceData = res;
+          console.log(itemsPriceData);
+        });
+        // for (let i = 0; i < allItems.length; i++) {
+        //   await findItems(client)
+        //     .then((res) => {
+        //       console.log(res);
+        //       itemsPriceData = res;
+        //     })
+        //     .catch((err) => {
+        //       console.log(err);
+        //     });
+        // }
         res.json(itemsPriceData);
       } else {
         console.log('no items');
