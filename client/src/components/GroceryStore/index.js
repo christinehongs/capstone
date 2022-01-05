@@ -95,7 +95,7 @@ const signWrapper = css`
 
   .sign {
     box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #EDBE85;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,7 +217,7 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              <Text>
+              <Text bg='#EDBE85'>
                 Currently shopping in:
                 <b>{secondCountry}!</b>
                 <br></br>
