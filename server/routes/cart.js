@@ -1,31 +1,34 @@
 import express from 'express';
-
-import { Item } from '../models/item.js';
+import { MongoClient } from 'mongodb';
 
 const cartRouter = express.Router();
 
-/*
+const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 
-const data = {
-  items: [
-    { name: 'apples1kg', quantity: 2 },
-    { name: 'bananas1kg', quantity: 4 }
-  ],
-}
-
- */
+const database = client.db('capstone');
+const items = database.collection('items');
 
 cartRouter.get('/cart', async (req, res) => {
-  const allItems = await Item.find();
+  const allItems = await items.find();
 
-  // const list = itemsRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  // res.json(list)
-  // console.log("hello")
-  // res.send(list);
-  // const mostExpensive = await itemsRef.where(`{name}`, '==', 'name').orderBy('price', 'asce').get()
-  // const leastExpensive = await itemsRef.where(`{name}`, '==', 'name').orderBy('price', 'desc').get()
-  // res.render(list);
+  console.log(allItems);
 });
+
+/*
+
+const cartData = {
+  {
+    city: 'Colombia',
+    item: 'apples',
+  }
+};
+
+// cartData.city = 'Medellin, Colombia'
+console.log(cartData.items.find((name === 'apples')))
+  { name: 'apples', quantity: 2 }
+ 
+
+ */
 
 // // input
 // {

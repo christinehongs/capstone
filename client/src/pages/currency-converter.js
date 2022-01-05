@@ -1,7 +1,6 @@
-import { Heading, Box } from '@chakra-ui/react';
+import { Box, FormLabel, HStack, Select, Stack } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Converter, Layout } from '../components';
 
 let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
@@ -9,8 +8,7 @@ const ConverterWrapper = styled(Box)`
   text-align: center;
 `;
 
-export default function CurrencyConverter() {
-  const [firstInput, setFirstInput] = useState('USD');
+export default function CurrencyConverter({ currency, setCurrency }) {
   const [secondInput, setSecondInput] = useState('EUR');
   const [data, setData] = useState([]);
   const [money, setMoney] = useState(1);
@@ -41,29 +39,29 @@ export default function CurrencyConverter() {
           responsedata.conversion_rates &&
           Object.keys(responsedata.conversion_rates)[145];
         setData([...Object.keys(responsedata.conversion_rates)]);
-        setFirstInput(responsedata.base_code);
+        setCurrency(responsedata.base_code);
         setExchangeRate(responsedata.conversion_rates[firstCurr]);
       });
   }, []);
 
-  const first = useFirstPrevious(firstInput);
+  const first = useFirstPrevious(currency);
   const second = useSecondPrevious(secondInput);
 
   useEffect(() => {
-    if (firstInput === secondInput) {
-      setFirstInput(second);
+    if (currency === secondInput) {
+      setCurrency(second);
       setSecondInput(first);
     }
-    if (firstInput != null && secondInput != null) {
+    if (currency != null && secondInput != null) {
       fetch(
-        `https://v6.exchangerate-api.com/v6/${currencyApiKey}/pair/${firstInput}/${secondInput}`
+        `https://v6.exchangerate-api.com/v6/${currencyApiKey}/pair/${currency}/${secondInput}`
       )
         .then((response) => response.json())
         .then((responseData) => {
           setExchangeRate(responseData.conversion_rate);
         });
     }
-  }, [firstInput, secondInput, first, second]);
+  }, [currency, secondInput, first, second]);
   let toAmount = 0,
     fromAmount = 1;
   if (moneyFrom) {
@@ -89,13 +87,13 @@ export default function CurrencyConverter() {
   }
 
   function handleFromCurrency(e) {
-    if (firstInput === secondInput) {
-      setFirstInput(second);
-    } else setFirstInput(e.target.value);
+    if (currency === secondInput) {
+      setCurrency(second);
+    } else setCurrency(e.target.value);
   }
 
   function handleToCurrency(e) {
-    if (firstInput === secondInput) {
+    if (currency === secondInput) {
       setSecondInput(first);
     } else {
       setSecondInput(e.target.value);
@@ -103,22 +101,76 @@ export default function CurrencyConverter() {
   }
 
   return (
-    <Layout>
-      <ConverterWrapper mt={4}>
-        <Heading mb={4}>Currency Converter</Heading>
-        <Converter
-          data={data}
-          money={money}
-          onMoneyChangeFrom={onMoneyChangeFrom}
-          onMoneyChangeTo={onMoneyChangeTo}
-          firstInput={firstInput}
-          secondInput={secondInput}
-          toAmount={toAmount}
-          fromAmount={fromAmount}
-          handleFromCurreny={handleFromCurrency}
-          handleToCurrency={handleToCurrency}
-        />
-      </ConverterWrapper>
-    </Layout>
+    <ConverterWrapper>
+      {/*<Heading mb={4}>Currency Converter</Heading>*/}
+      {/*<Converter*/}
+      {/*  data={data}*/}
+      {/*  money={money}*/}
+      {/*  onMoneyChangeFrom={onMoneyChangeFrom}*/}
+      {/*  onMoneyChangeTo={onMoneyChangeTo}*/}
+      {/*  firstInput={firstInput}*/}
+      {/*  secondInput={secondInput}*/}
+      {/*  toAmount={toAmount}*/}
+      {/*  fromAmount={fromAmount}*/}
+      {/*  handleFromCurreny={handleFromCurrency}*/}
+      {/*  handleToCurrency={handleToCurrency}*/}
+      {/*/>*/}
+      <Stack alignItems={'center'}>
+        {/*<div>*/}
+        {/*  {fromAmount} {firstInput} <h1>=</h1>*/}
+        {/*  <Text>*/}
+        {/*    {toAmount} {secondInput}*/}
+        {/*  </Text>*/}
+        {/*</div>*/}
+        <HStack mr={5}>
+          {/*<Input*/}
+          {/*  type="number"*/}
+          {/*  value={fromAmount >= 1000000000 ? 1000000000 : fromAmount}*/}
+          {/*  onChange={onMoneyChangeFrom}*/}
+          {/*  min="1"*/}
+          {/*  width={'10rem'}*/}
+          {/*/>*/}
+          <FormLabel htmlFor="select-currency" mr={0}>
+            Select Currency:
+          </FormLabel>
+          <Select
+            id="select-currency"
+            value={currency}
+            onChange={handleFromCurrency}
+            width={'6rem'}
+          >
+            {data.map((rate) => {
+              return (
+                <option key={rate} value={rate}>
+                  {rate}
+                </option>
+              );
+            })}
+          </Select>
+        </HStack>
+        {/*<HStack>*/}
+        {/*  <Input*/}
+        {/*    type="number"*/}
+        {/*    value={toAmount}*/}
+        {/*    onChange={onMoneyChangeTo}*/}
+        {/*    min="1"*/}
+        {/*    width={'10rem'}*/}
+        {/*  />*/}
+        {/*  <Select*/}
+        {/*    value={secondInput}*/}
+        {/*    onChange={handleToCurrency}*/}
+        {/*    width={'6rem'}*/}
+        {/*  >*/}
+        {/*    {data.map((rate) => {*/}
+        {/*      return (*/}
+        {/*        <option key={rate} value={rate}>*/}
+        {/*          {rate}*/}
+        {/*        </option>*/}
+        {/*      );*/}
+        {/*    })}*/}
+        {/*  </Select>*/}
+        {/*</HStack>*/}
+      </Stack>
+    </ConverterWrapper>
   );
 }

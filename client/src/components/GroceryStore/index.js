@@ -20,6 +20,10 @@ import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
 import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+// import { Converter } from '../index';
+import { CurrencyConverter } from '../../pages';
+
+let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
 const shelfStyles = css`
   display: flex;
@@ -96,7 +100,7 @@ const signWrapper = css`
     box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
     background-color: #edbe85;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
   }
@@ -105,8 +109,12 @@ const signWrapper = css`
 const GroceryStore = () => {
   const [cart, setCart] = React.useState([]);
   const [selection, setSelection] = React.useState('');
-  const [firstCountry, setFirstCountry] = React.useState('');
+  const [currency, setCurrency] = React.useState('USD');
   const [secondCountry, setSecondCountry] = React.useState('');
+  const [selectedCurrency, setSelectedCurrency] = React.useState('');
+  const [currencyData, setCurrencyData] = React.useState([]);
+  const [exchangeRate, setExchangeRate] = React.useState();
+
   const {
     register,
     handleSubmit,
@@ -117,7 +125,7 @@ const GroceryStore = () => {
   function handleFirstCountry(e) {
     e.preventDefault();
     console.log(e.target.value);
-    setFirstCountry(e.target.value);
+    setCurrency(e.target.value);
   }
 
   function handleSecondCountry(e) {
@@ -148,26 +156,11 @@ const GroceryStore = () => {
           <FormControl onSubmit={handleSubmit(handleOnSubmit)}>
             <HStack className="hstack">
               <Box className="select" sx={{ color: 'black !important' }}>
-                <FormLabel
-                  display={['none', null, null, 'block']}
-                  htmlFor="firstCountry"
-                  mr={2}
-                >
-                  I am from
-                </FormLabel>
-                <Select
-                  {...register('initialCountry')}
-                  maxW={['200px']}
-                  id="initialCountry"
-                  placeholder="Select country"
-                  onChange={handleFirstCountry}
-                  mr={1}
-                >
-                  {countryAcronyms.map((data, index) => {
-                    return <option key={index}>{data.country}</option>;
-                  })}
-                </Select>
-                <Text display={['none', null, null, 'inline']}>.</Text>
+                <CurrencyConverter
+                  currency={currency}
+                  setCurrency={setCurrency}
+                />
+                {/*<Text display={['none', null, null, 'inline']}>.</Text>*/}
                 <ArrowForwardIcon display={['block', null, null, 'none']} />
                 <FormLabel
                   display={['none', null, null, 'block']}
@@ -181,7 +174,7 @@ const GroceryStore = () => {
                   {...register('secondaryCountry')}
                   maxW={['200px']}
                   id="secondaryCountry"
-                  placeholder="Select country"
+                  placeholder="-select city-"
                   onChange={handleSecondCountry}
                   mr={1}
                 >
@@ -224,7 +217,7 @@ const GroceryStore = () => {
             width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
-              padding={5}
+              padding={4}
               className="sign"
               width="80%"
               height="50%"
@@ -233,14 +226,8 @@ const GroceryStore = () => {
               borderRadius="5px"
             >
               <Text bg="#EDBE85">
-                Currently shopping in:
-                <b>{secondCountry}!</b>
-                <br></br>
-                Total cost in cart:
-                <br></br>(<b>{firstCountry}</b>): (first country
-                currency(acryonym) total)
-                <br></br>(<b>{secondCountry}</b>): (second country
-                currency(acryonym) total)
+                <b>{secondCountry}</b>
+                Total cost in cart: (<b>{currency}</b>)
               </Text>
             </Box>
           </Box>
@@ -303,7 +290,10 @@ const GroceryStore = () => {
           >
             <Stall color="green">
               {/*Fresh stall row 1*/}
-              <Box css={shelfStyles} pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}>
+              <Box
+                css={shelfStyles}
+                pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}
+              >
                 <GroceryItem
                   name="apple"
                   setSelection={setSelection}
@@ -357,7 +347,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 3*/}
-              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem' ]}>
+              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem']}>
                 <GroceryItem
                   name="rice"
                   setSelection={setSelection}
@@ -380,7 +370,10 @@ const GroceryStore = () => {
             </Stall>
             <Stall color="red">
               {/*Fridge stall row 1*/}
-              <Box css={shelfStyles} pt={[null, null, '2.7rem', '4rem', '5.3rem']}>
+              <Box
+                css={shelfStyles}
+                pt={[null, null, '2.7rem', '4rem', '5.3rem']}
+              >
                 <GroceryItem
                   name="cheese"
                   setSelection={setSelection}

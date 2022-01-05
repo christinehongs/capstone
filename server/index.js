@@ -1,10 +1,12 @@
-
 import express from 'express';
 
 import { connectDb } from './config/mongoose';
 import citiesRouter from './routes/cities';
 import itemsRouter from './routes/items';
 import cartRouter from './routes/items';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 connectDb();
 const app = express();
@@ -21,10 +23,6 @@ const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
-
-
-
-
 
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
