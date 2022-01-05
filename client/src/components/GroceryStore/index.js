@@ -5,11 +5,6 @@ import {
   FormLabel,
   HStack,
   Image,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Select,
   Table,
   Tbody,
@@ -37,10 +32,11 @@ import {
 import useCities from '../../hooks/useCities';
 import axios from 'axios';
 import useCart from '../../hooks/useCart';
+import useItems from '../../hooks/useItems';
 
 const GroceryStore = () => {
   const [cartItems, setCartItems] = React.useState([]);
-  const [selection, setSelection] = React.useState(null);
+  const [selection, setSelection] = React.useState('');
   const [currency, setCurrency] = React.useState('USD');
   const [selectedCity, setSelectedCity] = React.useState('Medellin, Colombia');
   const [selectedCurrency, setSelectedCurrency] = React.useState('');
@@ -48,9 +44,11 @@ const GroceryStore = () => {
   const [exchangeRate, setExchangeRate] = React.useState();
   const [citiesList, setCitiesList] = React.useState([]);
   // const [formData, setFormData] = React.useState(null);
+  const [itemPrice, setItemPrice] = React.useState(0);
 
   const { isLoading: citiesLoading, data: citiesData } = useCities();
   const { isLoading: cartDataLoading, data: cartData } = useCart();
+  const { isLoading: itemsLoading, data: itemsData } = useItems();
 
   // const [drop] = useDrop(() => ({
   //   accept: 'item',
@@ -68,19 +66,32 @@ const GroceryStore = () => {
     formState: { errors },
   } = useForm();
 
-  // const handleConversion = () => {
-  //   let toAmount = 0,
-  //     fromAmount = 1;
-  //   if (moneyFrom) {
-  //     fromAmount = money;
-  //     toAmount = fromAmount * exchangeRate || 0;
-  //     toAmount = toAmount.toFixed(2);
-  //   } else {
-  //     toAmount = money;
-  //     fromAmount = toAmount / exchangeRate;
-  //     fromAmount = fromAmount.toFixed(2);
-  //   }
-  // };
+  const handleConversion = () => {
+    // let toAmount = 0,
+    //   fromAmount = 1;
+    // if (moneyFrom) {
+    //   fromAmount = money;
+    //   toAmount = fromAmount * exchangeRate || 0;
+    //   toAmount = toAmount.toFixed(2);
+    // } else {
+    //   toAmount = money;
+    //   fromAmount = toAmount / exchangeRate;
+    //   fromAmount = fromAmount.toFixed(2);
+    // }
+
+    if (currency !== 'USD') {
+    } else {
+      // return
+    }
+  };
+
+  const handleGetPrice = () => {
+    for (let i = 0; i < itemsData.length; i++) {
+      if (itemsData[i].name === selection) {
+        setItemPrice(itemsData[i].price.toFixed(2));
+      }
+    }
+  };
 
   function handleSecondCountry(e) {
     e.preventDefault();
@@ -154,12 +165,21 @@ const GroceryStore = () => {
 
   React.useEffect(() => {
     // selection && console.log(selection);
-    selection && setCartItems([...cartItems, selection]);
-  }, [selection]);
+    // selection && setCartItems([...cartItems, selection]);
+    itemsData && handleGetPrice();
+  }, [selection, itemsData]);
 
   React.useEffect(() => {
     console.log(cartItems);
   }, [cartItems]);
+
+  React.useEffect(() => {
+    itemsData && console.log(itemsData);
+
+    // for (let i = 0; i < itemsData.length; i++) {
+    //
+    // }
+  }, [itemsData]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -232,11 +252,11 @@ const GroceryStore = () => {
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
             // width={['12rem', null, '17rem', null, '25rem']}
-            // width="100%"
-            height="100%"
-            minW={[null, null, null, '480px']}
-            // maxW={['200px', null, '500px', '600px']}
-            maxH={['150px', null, '400px', '500px']}
+            width="100%"
+            // height="100%"
+            // minW={[null, null, null, '480px']}
+            maxW={['200px', null, '400px', '400px']}
+            // maxH={['150px', null, '400px', '500px']}
           >
             {cartItems.length > 1 ? (
               <DeleteIcon
@@ -261,7 +281,7 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              {cartDataLoading ? (
+              {itemsLoading ? (
                 <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/68c512cd-5771-4700-b611-d8bfe279847d/dc3jnaf-5f55762d-dcfe-4f1c-8ce2-6f59140b54cd.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY4YzUxMmNkLTU3NzEtNDcwMC1iNjExLWQ4YmZlMjc5ODQ3ZFwvZGMzam5hZi01ZjU1NzYyZC1kY2ZlLTRmMWMtOGNlMi02ZjU5MTQwYjU0Y2QuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.MboqVNsrmsomDBGyOAEUWxN-oTX3SCewmf48jh8G8X0" />
               ) : (
                 <Table>
@@ -269,19 +289,23 @@ const GroceryStore = () => {
                     pos="sticky"
                     top={0}
                     bg="#f6dfc2"
-                    boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
+                    // boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
                     zIndex={2}
                   >
                     <Tr>
-                      <Th>#</Th>
+                      {/*<Th>#</Th>*/}
                       <Th>Items in Cart</Th>
                       <Th>Price</Th>
                     </Tr>
                   </Thead>
                   <Tbody
-                    boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)"
+                    // boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)"
                     zIndex={1}
                   >
+                    <Tr>
+                      <Td>{selection}</Td>
+                      <Td>{itemPrice !== 0 ? itemPrice : null}</Td>
+                    </Tr>
                     {/*{cartData*/}
                     {/*  ? cartData.map((item, index) => (*/}
                     {/*      <Tr key={index}>*/}
@@ -290,41 +314,46 @@ const GroceryStore = () => {
                     {/*      </Tr>*/}
                     {/*    ))*/}
                     {/*  : null}*/}
-                    {cartItems
-                      ? cartItems.map((item, index) => (
-                          <Tr key={index} pos="relative" zIndex={1}>
-                            <Td pl={['0.6rem']}>
-                              <Box
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                              >
-                                <DeleteIcon zIndex={2} mr={[3]} />
+                    {/*{cartItems*/}
+                    {/*  ? cartItems.map((item, index) => (*/}
+                    {/*      <Tr*/}
+                    {/*        key={index}*/}
+                    {/*        pos="relative"*/}
+                    {/*        zIndex={1}*/}
+                    {/*        minH={'300px'}*/}
+                    {/*      >*/}
+                    {/*        /!*<Td pl={['0.6rem']}>*!/*/}
+                    {/*        /!*  <Box*!/*/}
+                    {/*        /!*    display="flex"*!/*/}
+                    {/*        /!*    alignItems="center"*!/*/}
+                    {/*        /!*    justifyContent="center"*!/*/}
+                    {/*        /!*  >*!/*/}
+                    {/*        /!*    /!*<DeleteIcon zIndex={2} mr={[3]} />*!/*!/*/}
 
-                                <NumberInput
-                                  maxW={['70px']}
-                                  defaultValue={1}
-                                  min={1}
-                                  max={10}
-                                >
-                                  <NumberInputField bg="white" />
-                                  <NumberInputStepper>
-                                    <NumberIncrementStepper />
-                                    <NumberDecrementStepper />
-                                  </NumberInputStepper>
-                                </NumberInput>
-                              </Box>
-                            </Td>
-                            <Td>{item.item}</Td>
-                            <Td>${item.price}</Td>
-                          </Tr>
-                        ))
-                      : null}
-                    <Tr position="sticky" width="100%" px={3}>
-                      <td>
-                        Total: (<span className="bold">{currency}</span>)
-                      </td>
-                    </Tr>
+                    {/*        /!*    /!*<NumberInput*!/*!/*/}
+                    {/*        /!*    /!*  maxW={['140px']}*!/*!/*/}
+                    {/*        /!*    /!*  defaultValue={1}*!/*!/*/}
+                    {/*        /!*    /!*  min={1}*!/*!/*/}
+                    {/*        /!*    /!*  max={10}*!/*!/*/}
+                    {/*        /!*    /!*>*!/*!/*/}
+                    {/*        /!*    /!*  <NumberInputField bg="white" />*!/*!/*/}
+                    {/*        /!*    /!*  <NumberInputStepper>*!/*!/*/}
+                    {/*        /!*    /!*    <NumberIncrementStepper />*!/*!/*/}
+                    {/*        /!*    /!*    <NumberDecrementStepper />*!/*!/*/}
+                    {/*        /!*    /!*  </NumberInputStepper>*!/*!/*/}
+                    {/*        /!*    /!*</NumberInput>*!/*!/*/}
+                    {/*        /!*  </Box>*!/*/}
+                    {/*        /!*</Td>*!/*/}
+                    {/*        <Td>{item.item}</Td>*/}
+                    {/*        <Td>{item.price}</Td>*/}
+                    {/*      </Tr>*/}
+                    {/*    ))*/}
+                    {/*  : null}*/}
+                    {/*<Tr position="sticky" width="100%" px={3}>*/}
+                    {/*  <td>*/}
+                    {/*    Total: (<span className="bold">{currency}</span>)*/}
+                    {/*  </td>*/}
+                    {/*</Tr>*/}
                   </Tbody>
                 </Table>
               )}

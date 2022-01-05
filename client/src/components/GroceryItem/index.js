@@ -33,10 +33,7 @@ const GroceryItem = ({
   const handleOnClick = (e) => {
     e.preventDefault();
     // setQuantity(quantity + 1);
-    setSelection({
-      city: selectedCity,
-      item: name,
-    });
+    setSelection(name);
   };
 
   return (
