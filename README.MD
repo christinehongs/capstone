@@ -1,4 +1,4 @@
-![Logo](Global Groceries logo.JPG)
+![Global Groceries logo](https://user-images.githubusercontent.com/88682745/148169632-14d92868-2a74-4b41-b849-75a7dc38d008.png)
 
 
  # Global Groceries
