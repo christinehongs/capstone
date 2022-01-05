@@ -1,5 +1,4 @@
-import lodash from 'lodash';
-import { db } from '../config/firestore.js';
+import { MongoClient } from 'mongodb';
 
 import { bananas } from '../data/bananas.js';
 import { milk } from '../data/milk.js';
@@ -39,38 +38,36 @@ const itemsObj = {
   apples,
 };
 
-const allItems = [];
+const uri =
+  'mongodb+srv://capstone:capstone@cluster0.4s9zk.mongodb.net/capstone';
 
-for (const [itemName, itemList] of Object.entries(itemsObj)) {
-  itemList.forEach((itemDetails, index) => {
-    allItems.push({
-      name: itemName,
-      city: itemDetails.city,
-      price: itemDetails.price,
-      rank: itemDetails.rank,
-    });
-  });
+const client = new MongoClient(uri);
+
+async function run() {
+  try {
+    await client.connect();
+    const database = client.db('capstone');
+    const items = database.collection('items');
+
+    // create an array of documents to insert
+    const allItems = [];
+
+    for (const [itemName, itemList] of Object.entries(itemsObj)) {
+      itemList.forEach((itemDetails) => {
+        allItems.push({
+          name: itemName,
+          city: itemDetails.city,
+          price: itemDetails.price,
+          rank: itemDetails.rank,
+        });
+      });
+    }
+
+    const result = await items.insertMany(allItems);
+    console.log(`${result.insertedCount} documents were inserted`);
+  } finally {
+    await client.close();
+  }
 }
 
-(async () => {
-  let batch = db.batch();
-  let count = 0;
-
-  for (let index = 0; index < allItems.length; index++) {
-    count = index + 1;
-    const item = allItems[index];
-    const itemId = `${item.name}-${lodash.camelCase(item.city)}`;
-
-    const itemRef = db.collection('items').doc(itemId);
-    batch.set(itemRef, item);
-
-    if (count % 500 === 0) {
-      console.log(`Batching ${count}`);
-      await batch.commit();
-      batch = db.batch();
-    }
-  }
-
-  console.log(`Batching ${count}`);
-  await batch.commit();
-})();
+run().catch(console.dir);
