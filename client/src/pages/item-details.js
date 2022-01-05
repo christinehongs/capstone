@@ -10,7 +10,6 @@ import {
 import Navbar from '../components/Navbar'
 
 
-
 function ItemDetails() {
     return (
     <>
@@ -18,8 +17,8 @@ function ItemDetails() {
         <Wrap bg='#EEC396' justify='center' overflow='hidden' position='absolute' width='100%' height='93.2vh'>
             <VStack pt='2rem'>
                 <WrapItem  pr='5rem' pb='2rem'>
-                    <Center w='35vw' h='15vh' bg='#AE7B5B'>
-                        <Box w='90%' h='60%'bg='#FCF7EE' >
+                    <Center rounded='md' w='35vw' h='15vh' bg='#AE7B5B'>
+                        <Box boxShadow='dark-lg' p='6' rounded='md' w='90%' h='60%'bg='#FCF7EE' >
                             <Center color='black !important'>
                                 <b>Selected item</b>
                             </Center>
@@ -27,8 +26,8 @@ function ItemDetails() {
                     </Center>
                 </WrapItem>
                 <WrapItem pr='5rem'>
-                    <Center w='35vw' h='65vh' bg='#AE7B5B'>
-                        <Box w='85%' h='85%'bg='#FCF7EE' >
+                    <Center rounded='md' w='35vw' h='65vh' bg='#AE7B5B'>
+                        <Box boxShadow='dark-lg' p='6' rounded='md' w='85%' h='85%'bg='#FCF7EE' >
                             <Center color='black !important'>
                                 <div>
                                     <ol>
@@ -42,8 +41,8 @@ function ItemDetails() {
                 </WrapItem>
             </VStack>
             <WrapItem pt='2rem'>
-                <Center w='35vw' h='84vh' bg='#AE7B5B'>
-                    <Box w='85%' h='88%'bg='#FCF7EE' >
+                <Center rounded='md' w='35vw' h='84vh' bg='#AE7B5B'>
+                    <Box boxShadow='dark-lg' p='6' rounded='md' w='85%' h='88%'bg='#FCF7EE' >
                         <Center color='black !important'>
                             information
                         </Center>
