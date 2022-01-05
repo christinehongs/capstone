@@ -3,6 +3,7 @@ import express from 'express';
 
 import { connectDb } from './config/mongoose';
 import citiesRouter from './routes/cities';
+import itemsRouter from './routes/items';
 
 connectDb();
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(citiesRouter);
+app.use(itemsRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {

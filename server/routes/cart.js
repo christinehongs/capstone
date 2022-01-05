@@ -2,9 +2,9 @@ import { db} from ('./config/firestore');
 import lodash from 'lodash';
 
 import express from 'express'
-const router = express.Router();
+const cartRouter = express.Router();
 
-router.get('/groceryPrices', async(req, res) => {
+cartRouter.get('/cart', async(req, res) => {
   const itemsRef = db.collection('items');
   
 
@@ -18,11 +18,6 @@ router.get('/groceryPrices', async(req, res) => {
   
 });
 
-router.post('/groceryPrices', async (req, res) => {
-  // console.log(list)
-  console.log('world')
-});
-
 // // input
 // {
 //     city: 'Medellin, Colombia',
@@ -33,13 +28,3 @@ router.post('/groceryPrices', async (req, res) => {
 // {
 //     total: 12.99
 // }
-
-// //output
-// return [
-//   {
-//     firstCountry: [{ total: 12.99 }],
-//   },
-//   {
-//     secondCountry: [{ total: 8,24 }],
-//   },
-// ];
