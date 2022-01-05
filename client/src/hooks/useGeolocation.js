@@ -13,7 +13,7 @@ const useGeolocation = () => {
 
   useEffect(() => {
     let endPoint = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
-    axios.get(endPoint).then((response) => {
+    latitude !== '' && axios.get(endPoint).then((response) => {
       setResponseData(response.data);
     });
   }, [latitude, longitude]);

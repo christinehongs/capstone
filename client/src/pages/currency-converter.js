@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Converter, Layout } from '../components';
 
-const KEY = '03c4279c1831eb95aba13645';
+let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
 const ConverterWrapper = styled(Box)`
   text-align: center;
@@ -34,10 +34,12 @@ export default function CurrencyConverter() {
   }
 
   useEffect(() => {
-    fetch(`https://v6.exchangerate-api.com/v6/${KEY}/latest/usd`)
+    fetch(`https://v6.exchangerate-api.com/v6/${currencyApiKey}/latest/usd`)
       .then((response) => response.json())
       .then((responsedata) => {
-        const firstCurr = Object.keys(responsedata.conversion_rates)[145];
+        const firstCurr =
+          responsedata.conversion_rates &&
+          Object.keys(responsedata.conversion_rates)[145];
         setData([...Object.keys(responsedata.conversion_rates)]);
         setFirstInput(responsedata.base_code);
         setExchangeRate(responsedata.conversion_rates[firstCurr]);
@@ -54,7 +56,7 @@ export default function CurrencyConverter() {
     }
     if (firstInput != null && secondInput != null) {
       fetch(
-        `https://v6.exchangerate-api.com/v6/${KEY}/pair/${firstInput}/${secondInput}`
+        `https://v6.exchangerate-api.com/v6/${currencyApiKey}/pair/${firstInput}/${secondInput}`
       )
         .then((response) => response.json())
         .then((responseData) => {

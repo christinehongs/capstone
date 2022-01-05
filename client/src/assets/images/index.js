@@ -8,7 +8,7 @@
 // export { default as Meat } from './meat.svg';
 // export { default as Milk } from './milk.svg';
 // export { default as Onion } from './onion.svg';
-// export { default as Orange } from './orange.svg';
+// export { default as Orange } from './oranges.svg';
 // export { default as Potato } from './potato.svg';
 // export { default as Rice } from './rice.svg';
 // export { default as Tomato } from './tomato.svg';

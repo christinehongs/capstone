@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -19,6 +18,8 @@ import { GroceryItem } from '../index';
 import { countryAcronyms } from '../../data/countryAcronyms';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
+import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom';
 
 const shelfStyles = css`
   display: flex;
@@ -93,14 +94,16 @@ const signWrapper = css`
 
   .sign {
     box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #edbe85;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-y: auto;
   }
 `;
 
 const GroceryStore = () => {
+  const [cart, setCart] = React.useState([]);
   const [selection, setSelection] = React.useState('');
   const [firstCountry, setFirstCountry] = React.useState('');
   const [secondCountry, setSecondCountry] = React.useState('');
@@ -125,6 +128,14 @@ const GroceryStore = () => {
 
   const handleOnSubmit = () => {};
 
+  React.useEffect(() => {
+    setCart([...cart, selection]);
+  }, [selection]);
+
+  React.useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <GroceryStoreWrapper
@@ -136,13 +147,17 @@ const GroceryStore = () => {
         <Box css={formWrapper} p={[4]}>
           <FormControl onSubmit={handleSubmit(handleOnSubmit)}>
             <HStack className="hstack">
-              <Box className="select">
-                <FormLabel htmlFor="initialCountry" mr={2}>
+              <Box className="select" sx={{ color: 'black !important' }}>
+                <FormLabel
+                  display={['none', null, null, 'block']}
+                  htmlFor="firstCountry"
+                  mr={2}
+                >
                   I am from
                 </FormLabel>
                 <Select
                   {...register('initialCountry')}
-                  maxW="200px"
+                  maxW={['200px']}
                   id="initialCountry"
                   placeholder="Select country"
                   onChange={handleFirstCountry}
@@ -152,13 +167,19 @@ const GroceryStore = () => {
                     return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
-                .
-                <FormLabel htmlFor="secondaryCountry" ml={2} mr={2}>
+                <Text display={['none', null, null, 'inline']}>.</Text>
+                <ArrowForwardIcon display={['block', null, null, 'none']} />
+                <FormLabel
+                  display={['none', null, null, 'block']}
+                  htmlFor="secondCountry"
+                  ml={2}
+                  mr={2}
+                >
                   How much would my groceries cost in
                 </FormLabel>
                 <Select
                   {...register('secondaryCountry')}
-                  maxW="200px"
+                  maxW={['200px']}
                   id="secondaryCountry"
                   placeholder="Select country"
                   onChange={handleSecondCountry}
@@ -168,9 +189,9 @@ const GroceryStore = () => {
                     return <option key={index}>{data.country}</option>;
                   })}
                 </Select>
-                ?
+                <Text display={['none', null, null, 'inline']}>?</Text>
               </Box>
-              <Box textAlign="center">
+              {/* <Box textAlign="center">
                 <Button
                   colorScheme="teal"
                   variant="solid"
@@ -180,26 +201,30 @@ const GroceryStore = () => {
                 >
                   Let's go!
                 </Button>
-              </Box>
+              </Box> */}
             </HStack>
           </FormControl>
         </Box>
         <Box
+          sx={{ color: 'black !important' }}
           pos="absolute"
-          top="10%"
-          left="12.45rem"
-          width="84%"
+          top={['8.8%']}
+          left={['2rem', null, null, '12.45rem']}
+          width="90%"
           display="flex"
           alignItems="center"
           justifyContent="space-evenly"
+          flexDir={['horizontal', null, 'vertical']}
         >
           <Box
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            height={['260px']}
+            // height={['22rem']}
+            width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
+              padding={5}
               className="sign"
               width="80%"
               height="50%"
@@ -207,16 +232,26 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              <Text>{selection}</Text>
+              <Text bg="#EDBE85">
+                Currently shopping in:
+                <b>{secondCountry}!</b>
+                <br></br>
+                Total cost in cart:
+                <br></br>(<b>{firstCountry}</b>): (first country
+                currency(acryonym) total)
+                <br></br>(<b>{secondCountry}</b>): (second country
+                currency(acryonym) total)
+              </Text>
             </Box>
           </Box>
           <Box
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            height={['260px']}
+            width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
+              padding={5}
               className="sign"
               width="80%"
               height="50%"
@@ -224,12 +259,26 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              <p>hello</p>
+              <Text>
+                <b>{selection}</b>{' '}
+                <Link to="/item-details">
+                  (More info)
+                  <InfoIcon />
+                </Link>
+                <br></br>
+                Most expensive:
+                <br></br>
+                (country where it costs most):(cost)
+                <br></br>
+                Least expensive:
+                <br></br>
+                (country where it costs least):(cost)
+              </Text>
             </Box>
           </Box>
         </Box>
-
         <Box
+          flexDir={['horizontal', null, 'vertical']}
           width="100%"
           pos="absolute"
           display="flex"
@@ -242,17 +291,19 @@ const GroceryStore = () => {
             src={Item.Cart}
             alt="cart"
             zIndex="3"
-            maxW={['200px', '300px', null, null, null]}
+            maxW={['150px', '230px', null, null, '20rem']}
           />
           <Box
+            height={'100%'}
             className="stall-container"
+            flexDir={['column', null, 'row']}
             pos="relative"
             maxW={[null, null, '600px', '750px', '900px']}
             mb={['1rem']}
           >
             <Stall color="green">
               {/*Fresh stall row 1*/}
-              <Box css={shelfStyles} pt={'7.6rem'}>
+              <Box css={shelfStyles} pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}>
                 <GroceryItem
                   name="apple"
                   setSelection={setSelection}
@@ -279,7 +330,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 2*/}
-              <Box css={shelfStyles} pt={'0.9rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
                 <GroceryItem
                   name="onion"
                   setSelection={setSelection}
@@ -306,7 +357,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 3*/}
-              <Box css={shelfStyles} pt={'1.8rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem' ]}>
                 <GroceryItem
                   name="rice"
                   setSelection={setSelection}
@@ -329,7 +380,7 @@ const GroceryStore = () => {
             </Stall>
             <Stall color="red">
               {/*Fridge stall row 1*/}
-              <Box css={shelfStyles} pt={'6rem'}>
+              <Box css={shelfStyles} pt={[null, null, '2.7rem', '4rem', '5.3rem']}>
                 <GroceryItem
                   name="cheese"
                   setSelection={setSelection}
@@ -368,7 +419,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fridge stall row 2*/}
-              <Box css={shelfStyles} pt={'1.8rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '1.4rem']}>
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"

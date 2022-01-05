@@ -11,7 +11,7 @@
     "client-install": "cd client && yarn install",
     "server-install": "cd server && yarn install",
     "client-start": "cd client && yarn start",
-    "server-start": "cd client && yarn start",
+    "server-start": "cd server && yarn start",
     "start": "concurrently \"yarn client-start\" \"yarn server-start\""
   },
   "repository": {
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/christinehongs/capstone#readme",
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@dnd-kit/core": "^4.0.3",
     "@dnd-kit/utilities": "^3.0.2",
     "concurrently": "^6.5.1"
