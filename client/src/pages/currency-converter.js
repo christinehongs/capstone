@@ -1,6 +1,7 @@
 import { Box, FormLabel, HStack, Select, Stack } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Converter } from '../components';
 
 let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
@@ -108,7 +109,7 @@ export default function CurrencyConverter({ currency, setCurrency }) {
       {/*  money={money}*/}
       {/*  onMoneyChangeFrom={onMoneyChangeFrom}*/}
       {/*  onMoneyChangeTo={onMoneyChangeTo}*/}
-      {/*  firstInput={firstInput}*/}
+      {/*  firstInput={currency}*/}
       {/*  secondInput={secondInput}*/}
       {/*  toAmount={toAmount}*/}
       {/*  fromAmount={fromAmount}*/}

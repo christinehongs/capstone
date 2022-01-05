@@ -234,13 +234,14 @@ const GroceryStore = () => {
                     </Tr>
                   </Thead>
                   <Tbody boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)">
-                    {cartData &&
-                      cartData.map((item, index) => (
-                        <Tr key={index}>
-                          <Td>{item.city}</Td>
-                          <Td>${item.price}</Td>
-                        </Tr>
-                      ))}
+                    {cartData
+                      ? cartData.map((item, index) => (
+                          <Tr key={index}>
+                            <Td>{item.city}</Td>
+                            <Td>${item.price}</Td>
+                          </Tr>
+                        ))
+                      : null}
                   </Tbody>
                 </Table>
               )}
