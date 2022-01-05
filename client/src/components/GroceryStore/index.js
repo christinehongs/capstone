@@ -143,7 +143,7 @@ const GroceryStore = () => {
             <HStack className="hstack">
               <Box className="select" sx={{ color: 'black !important' }}>
                 <FormLabel display={['none', null, null, 'block']} htmlFor="firstCountry" mr={2}>
-                  I am from
+                  Choose currency
                 </FormLabel>
                 <Select
                   {...register('initialCountry')}
@@ -272,7 +272,7 @@ const GroceryStore = () => {
             src={Item.Cart}
             alt="cart"
             zIndex="3"
-            maxW={['150px', '200px', null, null, '20rem']}
+            maxW={['150px', '230px', null, null, '20rem']}
           />
           <Box
             height={'100%'}
@@ -284,7 +284,7 @@ const GroceryStore = () => {
           >
             <Stall color="green">
               {/*Fresh stall row 1*/}
-              <Box css={shelfStyles} pt={'7.6rem'}>
+              <Box css={shelfStyles} pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}>
                 <GroceryItem
                   name="apple"
                   setSelection={setSelection}
@@ -311,7 +311,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 2*/}
-              <Box css={shelfStyles} pt={'0.9rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
                 <GroceryItem
                   name="onion"
                   setSelection={setSelection}
@@ -338,7 +338,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 3*/}
-              <Box css={shelfStyles} pt={'1.8rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.4rem', '1.6rem' ]}>
                 <GroceryItem
                   name="rice"
                   setSelection={setSelection}
@@ -361,7 +361,7 @@ const GroceryStore = () => {
             </Stall>
             <Stall color="red">
               {/*Fridge stall row 1*/}
-              <Box css={shelfStyles} pt={'6rem'}>
+              <Box css={shelfStyles} pt={[null, null, '2.7rem', '4rem', '5.3rem']}>
                 <GroceryItem
                   name="cheese"
                   setSelection={setSelection}
@@ -400,7 +400,7 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fridge stall row 2*/}
-              <Box css={shelfStyles} pt={'1.8rem'}>
+              <Box css={shelfStyles} pt={[null, null, null, '.3rem', '1.4rem']}>
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"
