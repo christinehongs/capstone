@@ -142,7 +142,9 @@ const GroceryStore = () => {
                     })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
-                <Button minW={'5rem'} onClick={() => setCartData([])}>Clear Cart</Button>
+                <Button minW={'5rem'} onClick={() => setCartData([])}>
+                  Clear Cart
+                </Button>
               </Box>
               {/* <Box textAlign="center">
                 <Button
@@ -259,7 +261,11 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fresh stall row 2*/}
-              <Box css={shelfStyles} height={['2.6rem', null, null, null, null]} pt={[null, null, null, '3.2rem', '3.7rem']}>
+              <Box
+                css={shelfStyles}
+                height={['2.6rem', null, null, null, null]}
+                pt={[null, null, null, '3.2rem', '3.7rem']}
+              >
                 <GroceryItem
                   name="onion"
                   selectedCity={selectedCity}
@@ -365,7 +371,11 @@ const GroceryStore = () => {
                 />
               </Box>
               {/*Fridge stall row 2*/}
-              <Box css={shelfStyles} height={['3.7rem', null, null, null, null]} pt={[null, null, null, '4.3rem', '5.2rem']}>
+              <Box
+                css={shelfStyles}
+                height={['3.7rem', null, null, null, null]}
+                pt={[null, null, null, '4.3rem', '5.2rem']}
+              >
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"
