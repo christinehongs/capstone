@@ -19,10 +19,7 @@ cartRouter.get('/cart', async (req, res) => {
 const cartData = {
   {
     city: 'Colombia',
-    items: [
-      { name: 'apples', quantity: 2 },
-      { name: 'bananas', quantity: 4 }
-    ],
+    item: 'apples',
   }
 };
 

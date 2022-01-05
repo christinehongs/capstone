@@ -19,6 +19,7 @@ citiesRouter.get('/cities', async (_, res) => {
     .orderBy((city) => city.toLowerCase())
     .value();
 
+  console.log(allCities.length);
   res.send(allCities);
 });
 
