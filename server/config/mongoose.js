@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 export const connectDb = () => {
   // Set up default mongoose connection
   const mongoDbUrl = 'mongodb://localhost/capstone';
+  // const mongoDbUrl = env.MONGODB_URL;
   mongoose.connect(mongoDbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

@@ -1,11 +1,12 @@
-import { db} from ('./config/firestore');
+import express from 'express'
 import lodash from 'lodash';
 
-import express from 'express'
+import { Item } from '../models/item.js';
+
 const cartRouter = express.Router();
 
 cartRouter.get('/cart', async(req, res) => {
-  const itemsRef = db.collection('items');
+  const allItems = await Item.find();
   
 
   // const list = itemsRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));

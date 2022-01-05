@@ -4,6 +4,7 @@ import express from 'express';
 import { connectDb } from './config/mongoose';
 import citiesRouter from './routes/cities';
 import itemsRouter from './routes/items';
+import cartRouter from './routes/items';
 
 connectDb();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use(citiesRouter);
 app.use(itemsRouter);
+app.use(cartRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
