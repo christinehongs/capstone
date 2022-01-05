@@ -1,29 +1,30 @@
-const db = require('./config/firestore');
+import { db} from ('./config/firestore');
 import lodash from 'lodash';
 
-const express = require('express');
+import express from 'express'
 const router = express.Router();
 
 router.get('/groceryPrices', async(req, res) => {
   const itemsRef = db.collection('items');
-  const list = itemsRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  console.log(list);
+  
+
+  // const list = itemsRef.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  // res.json(list)
+  // console.log("hello")
   // res.send(list);
   // const mostExpensive = await itemsRef.where(`{name}`, '==', 'name').orderBy('price', 'asce').get()
   // const leastExpensive = await itemsRef.where(`{name}`, '==', 'name').orderBy('price', 'desc').get()
-
   // res.render(list);
   
 });
 
 router.post('/groceryPrices', async (req, res) => {
-  res.json(list)
-  console.log(list)
+  // console.log(list)
+  console.log('world')
 });
 
 // // input
 // {
-//     currency: 'YEN',
 //     city: 'Medellin, Colombia',
 //     items: [{ name: 'apples1kg', quantity: 2 }, { name: 'bananas1kg', quantity: 4 }],
 // };
@@ -42,5 +43,3 @@ router.post('/groceryPrices', async (req, res) => {
 //     secondCountry: [{ total: 8,24 }],
 //   },
 // ];
-
-module.exports = router;

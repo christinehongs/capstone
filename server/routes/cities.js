@@ -1,12 +1,11 @@
-import { db } from './config/firestore';
+import { Item } from '../models/item.js';
 import lodash from 'lodash';
+import express from 'express';
 
-const express = require('express');
-const router = express.Router();
+const citiesRouter = express.Router();
 
-router.get('/cities', (_, res) => {
-  const allItems = db.collection('items').get()
-
+citiesRouter.get('/cities', async (req, res) => {
+  const allItems = await Item.find();
   const citiesWithDups = allItems.map(item => item.city)
 
   const allCities = lodash.chain(citiesWithDups)
@@ -15,6 +14,5 @@ router.get('/cities', (_, res) => {
     .value()
 
   res.send(allCities)
-})
-
-module.exports = router;
+});
+export default citiesRouter;
