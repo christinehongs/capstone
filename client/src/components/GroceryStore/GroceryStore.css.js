@@ -14,6 +14,11 @@ export const shelfStyles = css`
     align-items: center;
     justify-content: flex-end;
     flex-direction: column;
+
+    .item-image {
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -80,5 +85,9 @@ export const signWrapper = css`
     align-items: flex-start;
     justify-content: center;
     overflow-y: auto;
+
+    .b {
+      font-weight: bold;
+    }
   }
 `;

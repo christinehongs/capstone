@@ -28,8 +28,6 @@ const cartData = {
 // cartData.city = 'Medellin, Colombia'
 console.log(cartData.items.find((name === 'apples')))
   { name: 'apples', quantity: 2 }
- 
-
  */
 
 // // input
