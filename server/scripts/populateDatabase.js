@@ -38,10 +38,7 @@ const itemsObj = {
   apples,
 };
 
-const uri =
-  'mongodb+srv://capstone:capstone@cluster0.4s9zk.mongodb.net/capstone';
-
-const client = new MongoClient(uri);
+const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 
 async function run() {
   try {

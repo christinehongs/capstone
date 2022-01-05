@@ -1,6 +1,8 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const cartRouter = express.Router();
 
 const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
@@ -26,8 +28,6 @@ const cartData = {
 // cartData.city = 'Medellin, Colombia'
 console.log(cartData.items.find((name === 'apples')))
   { name: 'apples', quantity: 2 }
- 
-
  */
 
 // // input
