@@ -1,20 +1,21 @@
-import { db } from './config/firestore';
 import lodash from 'lodash';
+import express from 'express';
 
-const express = require('express');
-const router = express.Router();
+import { Item } from '../models/item.js';
 
+const itemsRouter = express.Router();
 
-router.get('/items', (_, res) => {
-  const allItems = db.collection('items').get();
-
+itemsRouter.get('/items', async (_, res) => {
+  const allItems = await Item.find();
   const itemsWithDups = allItems.map((item) => item.name);
 
-  const allItems = lodash
+  const allItemNames = lodash
     .chain(itemsWithDups)
     .uniq()
     .orderBy((city) => city.toLowerCase())
     .value();
 
-  res.send(allItems);
+  res.send(allItemNames);
 });
+
+export default itemsRouter;
