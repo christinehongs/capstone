@@ -147,7 +147,7 @@ const GroceryStore = () => {
                 </FormLabel>
                 <Select
                   {...register('initialCountry')}
-                  maxW={['100px', "200px"]}
+                  maxW={["200px"]}
                   id="initialCountry"
                   placeholder="Select country"
                   onChange={handleFirstCountry}
@@ -164,7 +164,7 @@ const GroceryStore = () => {
                 </FormLabel>
                 <Select
                   {...register('secondaryCountry')}
-                  maxW="200px"
+                  maxW={["200px"]}
                   id="secondaryCountry"
                   placeholder="Select country"
                   onChange={handleSecondCountry}
@@ -194,7 +194,7 @@ const GroceryStore = () => {
           sx={{ color: 'black !important' }}
           pos="absolute"
           top={['8.8%']}
-          left={['4rem', null, null, "12.45rem"]}
+          left={['2rem', null, null, "12.45rem"]}
           width="90%"
           display="flex"
           alignItems="center"
@@ -206,7 +206,7 @@ const GroceryStore = () => {
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
             // height={['22rem']}
-            width={['10rem', null, '17rem', '20rem', '25rem']}
+            width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
               padding={5}
@@ -233,7 +233,7 @@ const GroceryStore = () => {
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            width={['10rem', null, '17rem', '20rem', '25rem']}
+            width={['12rem', null, '17rem', null, '25rem']}
           >
             <Box
               padding={5}
@@ -272,7 +272,7 @@ const GroceryStore = () => {
             src={Item.Cart}
             alt="cart"
             zIndex="3"
-            maxW={['150px', '200px', null, null, null]}
+            maxW={['150px', '200px', null, null, '20rem']}
           />
           <Box
             height={'100%'}

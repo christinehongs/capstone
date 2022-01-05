@@ -10,7 +10,6 @@ import {
 import Navbar from '../components/Navbar'
 
 
-
 function ItemDetails() {
     return (
     <>
