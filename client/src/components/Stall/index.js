@@ -7,14 +7,17 @@ const Stall = ({ children, color }) => {
     <Box
       background={`url(${color === 'green' ? StallA : StallB})`}
       backgroundSize="cover"
-      height={['350px']}
-      ml={[4]}
+      // height={['350px']}
+      ml={[null, null, null, 4]}
       pos="relative"
       display="flex"
       alignItems="center"
       justifyContent="flex-start"
       flexDir="column"
       width="100%"
+      minW={['300px']}
+      maxH={[ null, null, null, '500px']}
+      maxW={['27%', null, null, 'none']}
       sx={{
         aspectRatio: color === 'green' ? '5 / 4' : '4 / 3',
       }}
