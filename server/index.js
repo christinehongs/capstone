@@ -33,14 +33,9 @@ async function findItems(client) {
     .db('capstone')
     .collection('items')
     .find({})
-    // .limit()
     .toArray();
   if (result) {
-    console
-      .log
-      // `Found a listing in the collection with the name '${nameOfListing}':`
-      ();
-    console.log(result);
+    // console.log(result);
   } else {
     // console.log(`No listings found with the name '${nameOfListing}'`);
   }

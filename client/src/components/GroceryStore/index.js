@@ -8,10 +8,8 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { css } from '@emotion/react';
 import * as Item from '../../assets/images';
 import { Supermarket } from '../../assets/images';
 import { GroceryItem } from '../index';
@@ -22,89 +20,15 @@ import { ArrowForwardIcon, InfoIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 // import { Converter } from '../index';
 import { CurrencyConverter } from '../../pages';
+import {
+  formWrapper,
+  GroceryStoreWrapper,
+  shelfStyles,
+  signWrapper,
+} from './GroceryStore.css';
+import useCities from '../../hooks/useCities';
 
 let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
-
-const shelfStyles = css`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-evenly;
-  width: 100%;
-  position: relative;
-
-  .item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: column;
-  }
-`;
-
-const GroceryStoreWrapper = styled(Box)`
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-  z-index: 1;
-
-  .supermarket {
-    width: 100%;
-  }
-
-  .stall-container {
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-`;
-
-const formWrapper = css`
-  position: absolute;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  width: 100%;
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
-
-  .hstack {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .select {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    label {
-      margin-bottom: 0;
-    }
-  }
-`;
-
-const signWrapper = css`
-  position: relative;
-  //top: 5rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  aspect-ratio: 8 / 7;
-
-  .sign {
-    box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.3);
-    background-color: #edbe85;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    overflow-y: auto;
-  }
-`;
 
 const GroceryStore = () => {
   const [cart, setCart] = React.useState([]);
@@ -114,6 +38,13 @@ const GroceryStore = () => {
   const [selectedCurrency, setSelectedCurrency] = React.useState('');
   const [currencyData, setCurrencyData] = React.useState([]);
   const [exchangeRate, setExchangeRate] = React.useState();
+  const [citiesList, setCitiesList] = React.useState([]);
+
+  const citiesData = useCities();
+
+  // const { data, isFetching } = useQuery('cities', () => {
+  //   fetch('http://127.0.0.1:3001/cities').then((res) => res.json());
+  // });
 
   const {
     register,
@@ -141,8 +72,12 @@ const GroceryStore = () => {
   }, [selection]);
 
   React.useEffect(() => {
-    console.log(cart);
+    // console.log(cart);
   }, [cart]);
+
+  React.useEffect(() => {
+    citiesData && setCitiesList(citiesData.data);
+  }, [citiesData]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -178,8 +113,8 @@ const GroceryStore = () => {
                   onChange={handleSecondCountry}
                   mr={1}
                 >
-                  {countryAcronyms.map((data, index) => {
-                    return <option key={index}>{data.country}</option>;
+                  {citiesList.map((city, index) => {
+                    return <option key={index}>{city}</option>;
                   })}
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
