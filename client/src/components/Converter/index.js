@@ -20,7 +20,7 @@ function Converter(props) {
         />
         <Select
           value={props.firstInput}
-          onChange={props.handleFromCurreny}
+          onChange={props.handleFromCurrency}
           width={'6rem'}
         >
           {props.data.map((rate) => {
