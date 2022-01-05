@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -298,11 +297,11 @@ const GroceryStore = () => {
                   </Tbody>
                 </Table>
               )}
-              {selection && (
-                <Button mt={[4]} onClick={onOpen}>
-                  Global Prices
-                </Button>
-              )}
+              {/*{selection && (*/}
+              {/*  <Button mt={[4]} onClick={onOpen}>*/}
+              {/*    Global Prices*/}
+              {/*  </Button>*/}
+              {/*)}*/}
             </Box>
           </Box>
         </Box>
