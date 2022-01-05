@@ -19,7 +19,7 @@ const GroceryItem = ({
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        console.log(`${item.name} added to ${dropResult.name}`);
+        // console.log(`${item.name} added to ${dropResult.name}`);
       }
     },
     collect: (monitor) => ({

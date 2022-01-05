@@ -45,6 +45,9 @@ const GroceryStore = () => {
   const [citiesList, setCitiesList] = React.useState([]);
   // const [formData, setFormData] = React.useState(null);
   const [itemPrice, setItemPrice] = React.useState(0);
+  const [updatedPrice, setUpdatedPrice] = React.useState(0);
+
+  const [convRate, setConvRate] = React.useState(0);
 
   const { isLoading: citiesLoading, data: citiesData } = useCities();
   const { isLoading: cartDataLoading, data: cartData } = useCart();
@@ -67,22 +70,10 @@ const GroceryStore = () => {
   } = useForm();
 
   const handleConversion = () => {
-    // let toAmount = 0,
-    //   fromAmount = 1;
-    // if (moneyFrom) {
-    //   fromAmount = money;
-    //   toAmount = fromAmount * exchangeRate || 0;
-    //   toAmount = toAmount.toFixed(2);
-    // } else {
-    //   toAmount = money;
-    //   fromAmount = toAmount / exchangeRate;
-    //   fromAmount = fromAmount.toFixed(2);
-    // }
-
-    if (currency !== 'USD') {
-    } else {
-      // return
-    }
+    console.log(itemPrice, convRate);
+    let updatedPrice = itemPrice * convRate;
+    // setUpdatedPrice(itemPrice * convRate);
+    return updatedPrice.toFixed(2);
   };
 
   const handleGetPrice = () => {
@@ -101,7 +92,7 @@ const GroceryStore = () => {
 
   const handlePostCartData = (e) => {
     e.preventDefault();
-    console.log(cartItems.length);
+    // console.log(cartItems.length);
     if (cartItems.length > 1) {
       axios
         .post(
@@ -120,7 +111,7 @@ const GroceryStore = () => {
           console.log(error);
         });
     } else {
-      console.log('cart is empty');
+      // console.log('cart is empty');
     }
   };
 
@@ -170,16 +161,16 @@ const GroceryStore = () => {
   }, [selection, itemsData]);
 
   React.useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
+    // console.log(cartItems);
+    handleConversion();
+  }, [currency, selection]);
 
   React.useEffect(() => {
-    itemsData && console.log(itemsData);
-
+    // console.log(itemsLoading, itemsData);
     // for (let i = 0; i < itemsData.length; i++) {
     //
     // }
-  }, [itemsData]);
+  }, [itemsLoading, itemsData]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -196,6 +187,7 @@ const GroceryStore = () => {
                 <CurrencyConverter
                   currency={currency}
                   setCurrency={setCurrency}
+                  setConvRate={setConvRate}
                 />
                 <ArrowForwardIcon display={['block', null, null, 'none']} />
                 <FormLabel
@@ -304,7 +296,7 @@ const GroceryStore = () => {
                   >
                     <Tr>
                       <Td>{selection}</Td>
-                      <Td>{itemPrice !== 0 ? itemPrice : null}</Td>
+                      <Td>{itemPrice !== 0 ? handleConversion() : null}</Td>
                     </Tr>
                     {/*{cartData*/}
                     {/*  ? cartData.map((item, index) => (*/}

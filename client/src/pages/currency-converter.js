@@ -8,11 +8,15 @@ const ConverterWrapper = styled(Box)`
   text-align: center;
 `;
 
-export default function CurrencyConverter({ currency, setCurrency }) {
+export default function CurrencyConverter({
+  currency,
+  setCurrency,
+  setConvRate,
+}) {
   const [secondInput, setSecondInput] = useState('EUR');
   const [data, setData] = useState([]);
-  const [money, setMoney] = useState(1);
-  const [moneyFrom, setMoneyFrom] = useState(true);
+  // const [money, setMoney] = useState(1);
+  // const [moneyFrom, setMoneyFrom] = useState(true);
   const [exchangeRate, setExchangeRate] = useState();
 
   function useFirstPrevious(value) {
@@ -35,14 +39,34 @@ export default function CurrencyConverter({ currency, setCurrency }) {
     fetch(`https://v6.exchangerate-api.com/v6/${currencyApiKey}/latest/usd`)
       .then((response) => response.json())
       .then((responsedata) => {
-        const firstCurr =
-          responsedata.conversion_rates &&
-          Object.keys(responsedata.conversion_rates)[145];
+        // let currList = Object.keys(responsedata.conversion_rates);
+
+        // const matchingCurrency = currList.findIndex(
+        //   (curr) => curr === currency
+        // );
+
+        // const firstCurr =
+        //   responsedata.conversion_rates &&
+        //   Object.keys(responsedata.conversion_rates)[currency];
+
+        // console.log(
+        //   `responsedata.conversion_rates: ${
+        //     firstCurr !== undefined && firstCurr
+        //   }`
+        // );
+
+        // console.log(Object.keys(responsedata.conversion_rates));
         setData([...Object.keys(responsedata.conversion_rates)]);
         setCurrency(responsedata.base_code);
-        setExchangeRate(responsedata.conversion_rates[firstCurr]);
+        // console.log(responsedata);
+        setExchangeRate(responsedata.conversion_rates[currency]);
       });
   }, []);
+
+  useEffect(() => {
+    exchangeRate !== undefined && console.log('exchange rate:', exchangeRate);
+    console.log('currency:', currency);
+  }, [exchangeRate, currency]);
 
   const first = useFirstPrevious(currency);
   const second = useSecondPrevious(secondInput);
@@ -54,11 +78,12 @@ export default function CurrencyConverter({ currency, setCurrency }) {
     }
     if (currency != null && secondInput != null) {
       fetch(
-        `https://v6.exchangerate-api.com/v6/${currencyApiKey}/pair/${currency}/${secondInput}`
+        `https://v6.exchangerate-api.com/v6/${currencyApiKey}/pair/USD/${currency}`
       )
         .then((response) => response.json())
         .then((responseData) => {
           setExchangeRate(responseData.conversion_rate);
+          setConvRate(responseData.conversion_rate);
         });
     }
   }, [currency, secondInput, first, second]);
@@ -75,17 +100,17 @@ export default function CurrencyConverter({ currency, setCurrency }) {
   //   fromAmount = fromAmount.toFixed(2);
   // }
 
-  function onMoneyChangeFrom(e) {
-    const value = e.target.value;
-    setMoney(value);
-    setMoneyFrom(true);
-  }
+  // function onMoneyChangeFrom(e) {
+  //   const value = e.target.value;
+  //   setMoney(value);
+  //   setMoneyFrom(true);
+  // }
 
-  function onMoneyChangeTo(e) {
-    const value = e.target.value;
-    setMoney(value);
-    setMoneyFrom(false);
-  }
+  // function onMoneyChangeTo(e) {
+  //   const value = e.target.value;
+  //   setMoney(value);
+  //   setMoneyFrom(false);
+  // }
 
   function handleFromCurrency(e) {
     if (currency === secondInput) {

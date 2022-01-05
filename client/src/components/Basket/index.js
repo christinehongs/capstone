@@ -32,7 +32,7 @@ export const Basket = () => {
   }, [currentItem, basketItems]);
 
   React.useEffect(() => {
-    console.log(basketItems);
+    // console.log(basketItems);
   }, [basketItems]);
 
   return (

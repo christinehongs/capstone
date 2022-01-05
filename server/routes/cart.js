@@ -29,7 +29,7 @@ cartRouter.get('/cart', async (req, res) => {
   let cartPriceData = null;
 
   async function findItems(client, itemName) {
-    console.log(itemName);
+    console.log('item name:', itemName);
     const result = await client
       .db('capstone')
       .collection('items')
@@ -54,7 +54,7 @@ cartRouter.get('/cart', async (req, res) => {
           await findItems(client, cartItems[i].item)
             .then((res) => {
               cartPriceData = res;
-              console.log(cartPriceData);
+              console.log('cart price data:', cartPriceData);
             })
             .catch((err) => {
               console.log(err);
