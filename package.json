@@ -28,7 +28,8 @@
     "@chakra-ui/icons": "^1.1.1",
     "@dnd-kit/core": "^4.0.3",
     "@dnd-kit/utilities": "^3.0.2",
-    "concurrently": "^6.5.1"
+    "concurrently": "^6.5.1",
+    "react-query": "^3.34.7"
   },
   "devDependencies": {
     "eslint": "^8.5.0",
