@@ -11,7 +11,7 @@
     "client-install": "cd client && yarn install",
     "server-install": "cd server && yarn install",
     "client-start": "cd client && yarn start",
-    "server-start": "cd client && yarn start",
+    "server-start": "cd server && yarn start",
     "start": "concurrently \"yarn client-start\" \"yarn server-start\""
   },
   "repository": {

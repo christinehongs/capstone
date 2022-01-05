@@ -18,9 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { css } from '@emotion/react';
-import useGeolocation from '../../hooks/useGeolocation'
-import { ArrowBackIcon } from '@chakra-ui/icons'
-
+import useGeolocation from '../../hooks/useGeolocation';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const navbarStyles = css`
   position: relative;
@@ -45,7 +44,10 @@ function Navbar() {
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <HStack spacing="1rem">
-            <Link to="/"> <ArrowBackIcon w={9} h={9} /> </Link>
+            <Link to="/">
+              {' '}
+              <ArrowBackIcon w={9} h={9} />{' '}
+            </Link>
             {/* <Link to="/currency-converter">Currency Converter</Link> */}
           </HStack>
 
@@ -63,17 +65,24 @@ function Navbar() {
                   cursor={'pointer'}
                   minW={0}
                 >
-                  <Avatar
-                    size={'sm'}
-                    src={`https://flagcdn.com/w80/${newFlag}.png`}
-                  />
+                  {newFlag !== undefined ? (
+                    <Avatar
+                      size={'sm'}
+                      src={`https://flagcdn.com/w80/${newFlag}.png`}
+                    />
+                  ) : (
+                    <Avatar size={'sm'} />
+                  )}
                 </MenuButton>
                 <MenuList alignItems={'center'}>
                   <br />
                   <Center>
                     <Avatar
                       size={'2xl'}
-                      src={`https://flagcdn.com/256x192/${newFlag}.png`}
+                      src={
+                        newFlag !== undefined &&
+                        `https://flagcdn.com/256x192/${newFlag}.png`
+                      }
                     />
                   </Center>
                   <br />
@@ -82,7 +91,9 @@ function Navbar() {
                   </Center>
                   <br />
                   <MenuDivider />
-                  <MenuItem><Link to="/currency-converter">Currency Converter</Link></MenuItem>
+                  <MenuItem>
+                    <Link to="/currency-converter">Currency Converter</Link>
+                  </MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

@@ -5,15 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "store:seed": "node scripts/populateDatabase.js"
+    "db:seed": "node scripts/populateDatabase.js",
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
   },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dnd-kit/core": "^4.0.3",
-    "@google-cloud/firestore": "^5.0.1",
-    "lodash": "^4.17.21"
+    "express": "^4.17.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.1.5"
   }
 }
