@@ -1,39 +1,84 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 dotenv.config();
 const cartRouter = express.Router();
-
 const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
-
 const database = client.db('capstone');
 const items = database.collection('items');
 
-cartRouter.get('/cart', async (req, res) => {
-  const allItems = await items.find();
-  // res.send(allItems)
-  console.log(allItems);
+cartRouter.use(cors());
+cartRouter.use(bodyParser.json());
+cartRouter.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+let cartItems;
+
+cartRouter.post('/cart', (req, res) => {
+  cartItems = req.body;
+  // console.log(cartItems);
 });
 
-/*
+cartRouter.get('/cart', async (req, res) => {
+  let cartPriceData = null;
 
-const cartData = {
-  {
-    city: 'Colombia',
-    item: 'apples',
+  async function findItems(client, itemName) {
+    console.log(itemName);
+    const result = await client
+      .db('capstone')
+      .collection('items')
+      .find({
+        name: `${itemName}`,
+      })
+      .toArray();
+    if (result) {
+      return result;
+    } else {
+    }
   }
-};
 
-// cartData.city = 'Medellin, Colombia'
-console.log(cartData.items.find((name === 'apples')))
-  { name: 'apples', quantity: 2 }
- */
+  // const allItems = await items.find();
+
+  MongoClient.connect(client, async () => {
+    try {
+      await client.connect();
+      if (cartItems !== undefined) {
+        for (let i = 0; i < cartItems.length; i++) {
+          await findItems(client, cartItems[i].item)
+            .then((res) => {
+              cartPriceData = res;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        res.json(cartPriceData);
+      } else {
+        console.log('test');
+        res.end();
+      }
+
+      // console.log(cartPriceData);
+    } catch (e) {
+      console.error(e);
+    }
+  });
+});
+
+export default cartRouter;
 
 // // input
-// {
-//     city: 'Medellin, Colombia',
-//     items: [{ name: 'apples1kg', quantity: 2 }, { name: 'bananas1kg', quantity: 4 }],
+// const cartData = {
+//   {
+//     city: 'Colombia',
+//     item: 'apples',
+//   }
 // };
 
 // output
