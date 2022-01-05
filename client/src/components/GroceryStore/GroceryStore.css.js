@@ -78,13 +78,10 @@ export const signWrapper = css`
   aspect-ratio: 8 / 7;
 
   .sign {
-    //box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.8);
     background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    //overflow-y: auto;
-    //padding-top: 0 !important;
 
     .b {
       font-weight: bold;

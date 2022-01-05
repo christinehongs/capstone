@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Box,
+  Button,
   FormControl,
   FormLabel,
   HStack,
@@ -13,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -33,28 +35,29 @@ import useCities from '../../hooks/useCities';
 import axios from 'axios';
 import useCart from '../../hooks/useCart';
 import useItems from '../../hooks/useItems';
+import MoreInfo from '../MoreInfo';
+import usePrices from '../../hooks/usePrices';
 
 const GroceryStore = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [cartItems, setCartItems] = React.useState([]);
   const [selection, setSelection] = React.useState('');
   const [currency, setCurrency] = React.useState('USD');
   const [selectedCity, setSelectedCity] = React.useState('Medellin, Colombia');
-  const [selectedCurrency, setSelectedCurrency] = React.useState('');
-  const [currencyData, setCurrencyData] = React.useState([]);
-  const [exchangeRate, setExchangeRate] = React.useState();
   const [citiesList, setCitiesList] = React.useState([]);
-  // const [formData, setFormData] = React.useState(null);
+  const [itemsList, setItemsList] = React.useState([]);
   const [itemPrice, setItemPrice] = React.useState(0);
-  const [updatedPrice, setUpdatedPrice] = React.useState(0);
 
   const [convRate, setConvRate] = React.useState(0);
 
   const { isLoading: citiesLoading, data: citiesData } = useCities();
   const { isLoading: cartDataLoading, data: cartData } = useCart();
   const { isLoading: itemsLoading, data: itemsData } = useItems();
+  const { isLoading: pricesLoading, data: pricesData } = usePrices();
 
   // const [drop] = useDrop(() => ({
-  //   accept: 'item',
+  //   accept: 'item',1
   //   drop: () => ({ name: 'cart' }),
   //   collect: (monitor) => ({
   //     isOver: monitor.isOver(),
@@ -72,7 +75,6 @@ const GroceryStore = () => {
   const handleConversion = () => {
     console.log(itemPrice, convRate);
     let updatedPrice = itemPrice * convRate;
-    // setUpdatedPrice(itemPrice * convRate);
     return updatedPrice.toFixed(2);
   };
 
@@ -92,7 +94,6 @@ const GroceryStore = () => {
 
   const handlePostCartData = (e) => {
     e.preventDefault();
-    // console.log(cartItems.length);
     if (cartItems.length > 1) {
       axios
         .post(
@@ -111,29 +112,38 @@ const GroceryStore = () => {
           console.log(error);
         });
     } else {
-      // console.log('cart is empty');
     }
+  };
+
+  const handleAllPrices = () => {
+    axios
+      .post(
+        'http://localhost:3001/prices',
+        JSON.stringify({
+          name: selection,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(function (response) {
+        setItemsList(response);
+        console.log('prices response:', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleOnSubmit = () => {};
 
-  // React.useEffect(() => {
-  //   setCartItems([...cartItems, selection]);
-  //   console.log(selection);
-  // }, [selection]);
-
-  // React.useEffect(() => {
-  //   console.log(cartItems.slice(1));
-  // }, [cartItems]);
-
   React.useEffect(() => {
-    // console.log('cities:', citiesLoading);
     citiesData && setCitiesList(citiesData);
   }, [citiesData, citiesLoading]);
 
   React.useEffect(() => {
-    // console.log('cart:', cartDataLoading);
-    // cartData && console.log(cartData[0]);
     axios
       .post(
         'http://localhost:3001/items',
@@ -170,10 +180,18 @@ const GroceryStore = () => {
     // for (let i = 0; i < itemsData.length; i++) {
     //
     // }
-  }, [itemsLoading, itemsData]);
+    selection !== '' && handleAllPrices();
+  }, [selection]);
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <MoreInfo
+        isOpen={isOpen}
+        onClose={onClose}
+        cartData={cartData}
+        selection={selection}
+        itemsList={itemsList}
+      />
       <GroceryStoreWrapper
         background={`url(${Supermarket})`}
         backgroundSize="cover"
@@ -214,17 +232,6 @@ const GroceryStore = () => {
                 </Select>
                 <Text display={['none', null, null, 'inline']}>?</Text>
               </Box>
-              {/* <Box textAlign="center">
-                <Button
-                  colorScheme="teal"
-                  variant="solid"
-                  px="3rem"
-                  type="submit"
-                  value="submit"
-                >
-                  Let's go!
-                </Button>
-              </Box> */}
             </HStack>
           </FormControl>
         </Box>
@@ -277,90 +284,27 @@ const GroceryStore = () => {
                 <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/68c512cd-5771-4700-b611-d8bfe279847d/dc3jnaf-5f55762d-dcfe-4f1c-8ce2-6f59140b54cd.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY4YzUxMmNkLTU3NzEtNDcwMC1iNjExLWQ4YmZlMjc5ODQ3ZFwvZGMzam5hZi01ZjU1NzYyZC1kY2ZlLTRmMWMtOGNlMi02ZjU5MTQwYjU0Y2QuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.MboqVNsrmsomDBGyOAEUWxN-oTX3SCewmf48jh8G8X0" />
               ) : (
                 <Table>
-                  <Thead
-                    pos="sticky"
-                    top={0}
-                    bg="#f6dfc2"
-                    // boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
-                    zIndex={2}
-                  >
+                  <Thead pos="sticky" top={0} bg="#f6dfc2" zIndex={2}>
                     <Tr>
-                      {/*<Th>#</Th>*/}
                       <Th>Items in Cart</Th>
                       <Th>Price</Th>
                     </Tr>
                   </Thead>
-                  <Tbody
-                    // boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)"
-                    zIndex={1}
-                  >
-                    <Tr>
-                      <Td>{selection}</Td>
+                  <Tbody zIndex={1}>
+                    <Tr fontSize={[20]}>
+                      <Td textTransform="capitalize">{selection}</Td>
                       <Td>{itemPrice !== 0 ? handleConversion() : null}</Td>
                     </Tr>
-                    {/*{cartData*/}
-                    {/*  ? cartData.map((item, index) => (*/}
-                    {/*      <Tr key={index}>*/}
-                    {/*        <Td>{item.city}</Td>*/}
-                    {/*        <Td>${item.price}</Td>*/}
-                    {/*      </Tr>*/}
-                    {/*    ))*/}
-                    {/*  : null}*/}
-                    {/*{cartItems*/}
-                    {/*  ? cartItems.map((item, index) => (*/}
-                    {/*      <Tr*/}
-                    {/*        key={index}*/}
-                    {/*        pos="relative"*/}
-                    {/*        zIndex={1}*/}
-                    {/*        minH={'300px'}*/}
-                    {/*      >*/}
-                    {/*        /!*<Td pl={['0.6rem']}>*!/*/}
-                    {/*        /!*  <Box*!/*/}
-                    {/*        /!*    display="flex"*!/*/}
-                    {/*        /!*    alignItems="center"*!/*/}
-                    {/*        /!*    justifyContent="center"*!/*/}
-                    {/*        /!*  >*!/*/}
-                    {/*        /!*    /!*<DeleteIcon zIndex={2} mr={[3]} />*!/*!/*/}
-
-                    {/*        /!*    /!*<NumberInput*!/*!/*/}
-                    {/*        /!*    /!*  maxW={['140px']}*!/*!/*/}
-                    {/*        /!*    /!*  defaultValue={1}*!/*!/*/}
-                    {/*        /!*    /!*  min={1}*!/*!/*/}
-                    {/*        /!*    /!*  max={10}*!/*!/*/}
-                    {/*        /!*    /!*>*!/*!/*/}
-                    {/*        /!*    /!*  <NumberInputField bg="white" />*!/*!/*/}
-                    {/*        /!*    /!*  <NumberInputStepper>*!/*!/*/}
-                    {/*        /!*    /!*    <NumberIncrementStepper />*!/*!/*/}
-                    {/*        /!*    /!*    <NumberDecrementStepper />*!/*!/*/}
-                    {/*        /!*    /!*  </NumberInputStepper>*!/*!/*/}
-                    {/*        /!*    /!*</NumberInput>*!/*!/*/}
-                    {/*        /!*  </Box>*!/*/}
-                    {/*        /!*</Td>*!/*/}
-                    {/*        <Td>{item.item}</Td>*/}
-                    {/*        <Td>{item.price}</Td>*/}
-                    {/*      </Tr>*/}
-                    {/*    ))*/}
-                    {/*  : null}*/}
-                    {/*<Tr position="sticky" width="100%" px={3}>*/}
-                    {/*  <td>*/}
-                    {/*    Total: (<span className="bold">{currency}</span>)*/}
-                    {/*  </td>*/}
-                    {/*</Tr>*/}
                   </Tbody>
                 </Table>
               )}
-              {/*<Text>*/}
-              {/*  Total: (<span className="bold">{currency}</span>)*/}
-              {/*</Text>*/}
+              {selection && (
+                <Button mt={[4]} onClick={onOpen}>
+                  Global Prices
+                </Button>
+              )}
             </Box>
           </Box>
-          {/*<Box*/}
-          {/*  css={signWrapper}*/}
-          {/*  background={`url(${Item.Sign})`}*/}
-          {/*  backgroundSize="cover"*/}
-          {/*  width={['12rem', null, '17rem', null, '25rem']}*/}
-          {/*>*/}
-          {/*</Box>*/}
         </Box>
         <Box
           flexDir={['horizontal', null, 'vertical']}
@@ -394,6 +338,7 @@ const GroceryStore = () => {
               <Box
                 css={shelfStyles}
                 pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}
+                height={['7.3rem', null, null, '8.7rem', '10.7rem']}
               >
                 <GroceryItem
                   name="apples"
@@ -495,7 +440,8 @@ const GroceryStore = () => {
               {/*Fridge stall row 1*/}
               <Box
                 css={shelfStyles}
-                pt={[null, null, '2.7rem', '4rem', '5.3rem']}
+                pt={[null, null, '2.7rem', '7.2rem', '8.7rem']}
+                height={['6rem', null, null, null, null]}
               >
                 <GroceryItem
                   name="cheese"
