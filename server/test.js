@@ -1,20 +1,20 @@
 import { bananas1kg } from "../data/bananas1kg.js";
 import { milk1Liter } from "../data/milk.js";
-import { domesticBeerHalfLiterBottle } from "../data/domesticBeer.js";
-import { beefRound1kg } from "../data/beefRound.js";
-import { chickenFillets1kg } from "../data/chickenFillets.js";
-import { bottleOfWineMidRange } from "../data/bottleOfWine.js";
+import { domesticBeerHalfLiterBottle } from "../data/beer.js";
+import { beefRound1kg } from "../data/beef.js";
+import { chickenFillets1kg } from "../data/chicken.js";
+import { bottleOfWineMidRange } from "../data/wine.js";
 import { tomato1kg } from "../data/tomato.js";
 import { importedBeerOneThirdLiterBottle } from "../data/importedBeer.js";
 import { oranges1kg } from "../data/oranges.js";
 import { lettuce1Head } from "../data/lettuce.js";
-import { loafOfFreshWhiteBread500grams } from "../data/loafOfFreshWhiteBread.js";
+import { loafOfFreshWhiteBread500grams } from "../data/bread.js";
 import { onion1kg } from "../data/onion.js";
 import { riceWhite1kg } from "../data/rice.js";
 import { potato1kg } from "../data/potato.js";
-import { waterBottleOneAndHalfLiterBottle } from "../data/waterBottle.js";
+import { waterBottleOneAndHalfLiterBottle } from "../data/water-bottle.js";
 import { eggsDozen } from "../data/eggs.js";
-import { localCheese1kg } from "../data/localCheese.js";
+import { localCheese1kg } from "../data/cheese.js";
 import { apples1kg } from "../data/apples1kg.js";
 import fs from "fs";
 
@@ -126,6 +126,8 @@ allItems.forEach((item) => {
 //     if (err) throw err;
 //     console.log("The file has been saved!");
 //   });
+<<<<<<< Updated upstream
+=======
 
 
  {
@@ -290,3 +292,4 @@ allItems.forEach((item) => {
 "ZAR": 15.8131,
 "ZMW": 16.7157
 }
+>>>>>>> Stashed changes
