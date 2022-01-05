@@ -18,44 +18,53 @@ cartRouter.use(
   })
 );
 
-async function findItems(client) {
-  const result = await client
-    .db('capstone')
-    .collection('items')
-    .find({})
-    .toArray();
-  if (result) {
-    return result;
-  } else {
-  }
-}
-
-function handleRequest(req, res) {
-  console.log('\n-- INCOMING REQUEST AT ' + new Date().toISOString());
-  console.log(req.method + ' ' + req.url);
-  console.log(req.body);
-  // res.send('Hello World!');
-  // res.end();
-  res.status(204).send();
-}
+let cartItems;
 
 cartRouter.post('/cart', (req, res) => {
-  let cartItems = req.body;
-  console.log(cartItems);
-  // handleRequest(req, res);
+  cartItems = req.body;
+  // console.log(cartItems);
 });
 
 cartRouter.get('/cart', async (req, res) => {
-  const allItems = await items.find();
+  let cartPriceData = null;
+
+  async function findItems(client, itemName) {
+    console.log(itemName);
+    const result = await client
+      .db('capstone')
+      .collection('items')
+      .find({
+        name: `${itemName}`,
+      })
+      .toArray();
+    if (result) {
+      return result;
+    } else {
+    }
+  }
+
+  // const allItems = await items.find();
 
   MongoClient.connect(client, async () => {
     try {
       await client.connect();
-      const allItems = await findItems(client);
-      // console.log(allItems.length);
+      if (cartItems !== undefined) {
+        for (let i = 0; i < cartItems.length; i++) {
+          await findItems(client, cartItems[i].item)
+            .then((res) => {
+              cartPriceData = res;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        res.json(cartPriceData);
+      } else {
+        console.log('test');
+        res.end();
+      }
 
-      console.log(allItems);
-      // console.log(allCities);
+      // console.log(cartPriceData);
     } catch (e) {
       console.error(e);
     }
@@ -63,14 +72,6 @@ cartRouter.get('/cart', async (req, res) => {
 });
 
 export default cartRouter;
-
-// export default function () {
-//   router.route('/cart').post((req, res) => {
-//     res.setHeader('Content-Type', 'application/json');
-//   });
-//
-//   return router;
-// }
 
 // // input
 // const cartData = {

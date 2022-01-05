@@ -2,22 +2,11 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import lodash from 'lodash';
 import dotenv from 'dotenv';
+import { findItems } from '../helpers.js';
 
 dotenv.config();
 const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 const citiesRouter = express.Router();
-
-async function findItems(client) {
-  const result = await client
-    .db('capstone')
-    .collection('items')
-    .find({})
-    .toArray();
-  if (result) {
-    return result;
-  } else {
-  }
-}
 
 citiesRouter.get('/cities', async (_, res) => {
   MongoClient.connect(client, async () => {

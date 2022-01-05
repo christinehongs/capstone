@@ -6,7 +6,13 @@ import {
   HStack,
   Image,
   Select,
+  Table,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -26,11 +32,10 @@ import {
 } from './GroceryStore.css';
 import useCities from '../../hooks/useCities';
 import axios from 'axios';
-
-let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
+import useCart from '../../hooks/useCart';
 
 const GroceryStore = () => {
-  const [cartData, setCartData] = React.useState([]);
+  const [cartItems, setCartItems] = React.useState([]);
   const [selection, setSelection] = React.useState(null);
   const [currency, setCurrency] = React.useState('USD');
   const [selectedCity, setSelectedCity] = React.useState('Medellin, Colombia');
@@ -40,7 +45,8 @@ const GroceryStore = () => {
   const [citiesList, setCitiesList] = React.useState([]);
   // const [formData, setFormData] = React.useState(null);
 
-  const { loading, data } = useCities();
+  const { isLoading: citiesLoading, data: citiesData } = useCities();
+  const { isLoading: cartDataLoading, data: cartData } = useCart();
 
   // const [drop] = useDrop(() => ({
   //   accept: 'item',
@@ -62,12 +68,6 @@ const GroceryStore = () => {
     formState: { errors },
   } = useForm();
 
-  // function handleFirstCountry(e) {
-  //   e.preventDefault();
-  //   console.log(e.target.value);
-  //   setCurrency(e.target.value);
-  // }
-
   function handleSecondCountry(e) {
     e.preventDefault();
     console.log(e.target.value);
@@ -75,13 +75,18 @@ const GroceryStore = () => {
   }
 
   const handlePostCartData = () => {
-    if (cartData.length > 1) {
+    console.log(cartItems.length);
+    if (cartItems.length > 1) {
       axios
-        .post('http://localhost:3001/cart', JSON.stringify(cartData.slice(1)), {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        .post(
+          'http://localhost:3001/cart',
+          JSON.stringify(cartItems.slice(1)),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
         .then(function (response) {
           console.log(response);
         })
@@ -96,16 +101,22 @@ const GroceryStore = () => {
   const handleOnSubmit = () => {};
 
   React.useEffect(() => {
-    setCartData([...cartData, selection]);
+    setCartItems([...cartItems, selection]);
   }, [selection]);
 
   React.useEffect(() => {
-    cartData.length > 0 && console.log(cartData.slice(1));
-  }, [cartData]);
+    cartItems.length > 0 && console.log(cartItems.slice(1));
+  }, [cartItems]);
 
   React.useEffect(() => {
-    data && setCitiesList(data);
-  }, [data]);
+    console.log('cities:', citiesLoading);
+    citiesData && setCitiesList(citiesData);
+  }, [citiesData, citiesLoading]);
+
+  React.useEffect(() => {
+    console.log('cart:', cartDataLoading);
+    cartData && console.log(cartData[0]);
+  }, [cartData, cartDataLoading]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -123,7 +134,6 @@ const GroceryStore = () => {
                   currency={currency}
                   setCurrency={setCurrency}
                 />
-                {/*<Text display={['none', null, null, 'inline']}>.</Text>*/}
                 <ArrowForwardIcon display={['block', null, null, 'none']} />
                 <FormLabel
                   display={['none', null, null, 'block']}
@@ -141,8 +151,8 @@ const GroceryStore = () => {
                   onChange={handleSecondCountry}
                   mr={1}
                 >
-                  {data &&
-                    !loading &&
+                  {citiesData &&
+                    !citiesLoading &&
                     citiesList.map((selectedCity, index) => {
                       return <option key={index}>{selectedCity}</option>;
                     })}
@@ -178,31 +188,65 @@ const GroceryStore = () => {
             css={signWrapper}
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
-            width={['12rem', null, '17rem', null, '25rem']}
+            // width={['12rem', null, '17rem', null, '25rem']}
+            // width="100%"
+            height="100%"
+            minW={[null, null, null, '480px']}
+            // maxW={['200px', null, '500px', '600px']}
+            maxH={['150px', null, '400px', '500px']}
           >
+            {cartItems.length > 1 ? (
+              <DeleteIcon
+                pos="absolute"
+                top="40%"
+                right="7%"
+                zIndex={2}
+                onClick={() => setCartItems([])}
+                opacity={cartItems.length === 1 ? 0.4 : 1}
+                cursor={cartItems.length > 1 ? 'pointer' : 'none'}
+              />
+            ) : null}
+
             <Box
               pos="relative"
-              padding={4}
+              pb={3}
               className="sign"
+              flexDir="column"
               width="80%"
               height="50%"
               mb={6}
               ml={[-3]}
               borderRadius="5px"
             >
+              {cartDataLoading ? (
+                <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/68c512cd-5771-4700-b611-d8bfe279847d/dc3jnaf-5f55762d-dcfe-4f1c-8ce2-6f59140b54cd.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY4YzUxMmNkLTU3NzEtNDcwMC1iNjExLWQ4YmZlMjc5ODQ3ZFwvZGMzam5hZi01ZjU1NzYyZC1kY2ZlLTRmMWMtOGNlMi02ZjU5MTQwYjU0Y2QuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.MboqVNsrmsomDBGyOAEUWxN-oTX3SCewmf48jh8G8X0" />
+              ) : (
+                <Table>
+                  <Thead
+                    pos="sticky"
+                    top={0}
+                    bg="#f6dfc2"
+                    boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
+                  >
+                    <Tr>
+                      <Th>City, Country</Th>
+                      <Th>Price</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)">
+                    {cartData &&
+                      cartData.map((item, index) => (
+                        <Tr key={index}>
+                          <Td>{item.city}</Td>
+                          <Td>${item.price}</Td>
+                        </Tr>
+                      ))}
+                  </Tbody>
+                </Table>
+              )}
               <Text>
                 Total: (<span className="bold">{currency}</span>)
               </Text>
-              {cartData.length > 1 ? (
-                <DeleteIcon
-                  onClick={() => setCartData([])}
-                  pos="absolute"
-                  top={2}
-                  right={2}
-                  opacity={cartData.length === 1 ? 0.4 : 1}
-                  cursor={cartData.length > 1 ? 'pointer' : 'none'}
-                />
-              ) : null}
             </Box>
           </Box>
           {/*<Box*/}
@@ -230,7 +274,7 @@ const GroceryStore = () => {
             alt="cart"
             zIndex="3"
             maxW={['150px', '230px', null, null, '20rem']}
-            cursor={cartData.length > 1 ? 'pointer' : 'default'}
+            cursor={cartItems.length > 1 ? 'pointer' : 'default'}
           />
           <Box
             height={'100%'}
@@ -247,21 +291,21 @@ const GroceryStore = () => {
                 pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}
               >
                 <GroceryItem
-                  name="apple"
+                  name="apples"
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Apple}
                   fruitHeight={['35px']}
                 />
                 <GroceryItem
-                  name="banana"
+                  name="bananas"
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Banana}
                   fruitHeight={['45px']}
                 />
                 <GroceryItem
-                  name="orange"
+                  name="oranges"
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Orange}
@@ -278,7 +322,7 @@ const GroceryStore = () => {
               {/*Fresh stall row 2*/}
               <Box css={shelfStyles} pt={[null, null, null, '.3rem', '0.7rem']}>
                 <GroceryItem
-                  name="onion"
+                  name="onions"
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Onion}
