@@ -5,6 +5,8 @@ import { MongoClient } from 'mongodb';
 import citiesRouter from './routes/cities';
 import itemsRouter from './routes/items';
 import cartRouter from './routes/cart';
+import pricesRouter from './routes/prices';
+
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -23,6 +25,7 @@ app.use(express.static('public'));
 app.use(citiesRouter);
 app.use(itemsRouter);
 app.use(cartRouter);
+app.use(pricesRouter);
 
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', '*');

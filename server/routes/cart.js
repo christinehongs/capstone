@@ -29,7 +29,7 @@ cartRouter.get('/cart', async (req, res) => {
   let cartPriceData = null;
 
   async function findItems(client, itemName) {
-    console.log(itemName);
+    console.log('item name:', itemName);
     const result = await client
       .db('capstone')
       .collection('items')
@@ -38,6 +38,7 @@ cartRouter.get('/cart', async (req, res) => {
       })
       .toArray();
     if (result) {
+      // console.log(result);
       return result;
     } else {
     }
@@ -53,6 +54,7 @@ cartRouter.get('/cart', async (req, res) => {
           await findItems(client, cartItems[i].item)
             .then((res) => {
               cartPriceData = res;
+              console.log('cart price data:', cartPriceData);
             })
             .catch((err) => {
               console.log(err);
@@ -60,7 +62,7 @@ cartRouter.get('/cart', async (req, res) => {
         }
         res.json(cartPriceData);
       } else {
-        console.log('test');
+        console.log('cart empty');
         res.end();
       }
 

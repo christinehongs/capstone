@@ -2,12 +2,12 @@ import React from 'react';
 import { Box, Image, Tooltip } from '@chakra-ui/react';
 import { DragPreviewImage, useDrag } from 'react-dnd';
 import { Tray } from '../../assets/images';
-import axios from 'axios';
 
 const GroceryItem = ({
   component,
   name,
   fruitHeight,
+  selection,
   setSelection,
   selectedCity,
 }) => {
@@ -19,7 +19,7 @@ const GroceryItem = ({
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        console.log(`${item.name} added to ${dropResult.name}`);
+        // console.log(`${item.name} added to ${dropResult.name}`);
       }
     },
     collect: (monitor) => ({
@@ -28,11 +28,12 @@ const GroceryItem = ({
     }),
   }));
 
-  const handleOnClick = (city, item) => {
-    setSelection({
-      city,
-      item,
-    });
+  // const [quantity, setQuantity] = React.useState(1);
+
+  const handleOnClick = (e) => {
+    e.preventDefault();
+    // setQuantity(quantity + 1);
+    setSelection(name);
   };
 
   return (
@@ -48,10 +49,7 @@ const GroceryItem = ({
       >
         <Image
           className="item-image"
-          onClick={(e) => {
-            e.preventDefault();
-            handleOnClick(selectedCity, name);
-          }}
+          onClick={handleOnClick}
           ref={drag}
           opacity={collected.isDragging ? 0 : 1}
           src={component}

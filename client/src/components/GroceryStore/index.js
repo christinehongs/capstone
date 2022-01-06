@@ -14,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -23,7 +24,6 @@ import { GroceryItem } from '../index';
 import { useForm } from 'react-hook-form';
 import Stall from '../Stall';
 import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons';
-// import { Converter } from '../index';
 import { CurrencyConverter } from '../../pages';
 import {
   formWrapper,
@@ -34,33 +34,36 @@ import {
 import useCities from '../../hooks/useCities';
 import axios from 'axios';
 import useCart from '../../hooks/useCart';
+import useItems from '../../hooks/useItems';
+import MoreInfo from '../MoreInfo';
+import usePrices from '../../hooks/usePrices';
 
 const GroceryStore = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [cartItems, setCartItems] = React.useState([]);
-  const [selection, setSelection] = React.useState(null);
+  const [selection, setSelection] = React.useState('');
   const [currency, setCurrency] = React.useState('USD');
   const [selectedCity, setSelectedCity] = React.useState('Medellin, Colombia');
-  const [selectedCurrency, setSelectedCurrency] = React.useState('');
-  const [currencyData, setCurrencyData] = React.useState([]);
-  const [exchangeRate, setExchangeRate] = React.useState();
   const [citiesList, setCitiesList] = React.useState([]);
-  // const [formData, setFormData] = React.useState(null);
+  const [itemsList, setItemsList] = React.useState([]);
+  const [itemPrice, setItemPrice] = React.useState(0);
+
+  const [convRate, setConvRate] = React.useState(0);
 
   const { isLoading: citiesLoading, data: citiesData } = useCities();
   const { isLoading: cartDataLoading, data: cartData } = useCart();
+  const { isLoading: itemsLoading, data: itemsData } = useItems();
+  const { isLoading: pricesLoading, data: pricesData } = usePrices();
 
   // const [drop] = useDrop(() => ({
-  //   accept: 'item',
+  //   accept: 'item',1
   //   drop: () => ({ name: 'cart' }),
   //   collect: (monitor) => ({
   //     isOver: monitor.isOver(),
   //     canDrop: monitor.canDrop(),
   //   }),
   // }));
-
-  // const { data, isFetching } = useQuery('cities', () => {
-  //   fetch('http://127.0.0.1:3001/cities').then((res) => res.json());
-  // });
 
   const {
     register,
@@ -69,14 +72,28 @@ const GroceryStore = () => {
     formState: { errors },
   } = useForm();
 
+  const handleConversion = () => {
+    console.log(itemPrice, convRate);
+    let updatedPrice = itemPrice * convRate;
+    return updatedPrice.toFixed(2);
+  };
+
+  const handleGetPrice = () => {
+    for (let i = 0; i < itemsData.length; i++) {
+      if (itemsData[i].name === selection) {
+        setItemPrice(itemsData[i].price.toFixed(2));
+      }
+    }
+  };
+
   function handleSecondCountry(e) {
     e.preventDefault();
     console.log(e.target.value);
     setSelectedCity(e.target.value);
   }
 
-  const handlePostCartData = () => {
-    console.log(cartItems.length);
+  const handlePostCartData = (e) => {
+    e.preventDefault();
     if (cartItems.length > 1) {
       axios
         .post(
@@ -89,38 +106,92 @@ const GroceryStore = () => {
           }
         )
         .then(function (response) {
-          console.log(response);
+          console.log('cart response:', response);
         })
         .catch(function (error) {
           console.log(error);
         });
     } else {
-      console.log('cart is empty');
     }
+  };
+
+  const handleAllPrices = () => {
+    axios
+      .post(
+        'http://localhost:3001/prices',
+        JSON.stringify({
+          name: selection,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(function (response) {
+        setItemsList(response);
+        console.log('prices response:', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleOnSubmit = () => {};
 
   React.useEffect(() => {
-    setCartItems([...cartItems, selection]);
-  }, [selection]);
-
-  React.useEffect(() => {
-    cartItems.length > 0 && console.log(cartItems.slice(1));
-  }, [cartItems]);
-
-  React.useEffect(() => {
-    console.log('cities:', citiesLoading);
     citiesData && setCitiesList(citiesData);
   }, [citiesData, citiesLoading]);
 
   React.useEffect(() => {
-    console.log('cart:', cartDataLoading);
-    cartData && console.log(cartData[0]);
-  }, [cartData, cartDataLoading]);
+    axios
+      .post(
+        'http://localhost:3001/items',
+        {
+          city: selectedCity,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(function (response) {
+        console.log('items response:', response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [selectedCity]);
+
+  React.useEffect(() => {
+    // selection && console.log(selection);
+    // selection && setCartItems([...cartItems, selection]);
+    itemsData && handleGetPrice();
+  }, [selection, itemsData]);
+
+  React.useEffect(() => {
+    // console.log(cartItems);
+    handleConversion();
+  }, [currency, selection]);
+
+  React.useEffect(() => {
+    // console.log(itemsLoading, itemsData);
+    // for (let i = 0; i < itemsData.length; i++) {
+    //
+    // }
+    selection !== '' && handleAllPrices();
+  }, [selection]);
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <MoreInfo
+        isOpen={isOpen}
+        onClose={onClose}
+        cartData={cartData}
+        selection={selection}
+        itemsList={itemsList}
+      />
       <GroceryStoreWrapper
         background={`url(${Supermarket})`}
         backgroundSize="cover"
@@ -134,6 +205,7 @@ const GroceryStore = () => {
                 <CurrencyConverter
                   currency={currency}
                   setCurrency={setCurrency}
+                  setConvRate={setConvRate}
                 />
                 <ArrowForwardIcon display={['block', null, null, 'none']} />
                 <FormLabel
@@ -163,17 +235,6 @@ const GroceryStore = () => {
                   Clear Cart
                 </Button>
               </Box>
-              {/* <Box textAlign="center">
-                <Button
-                  colorScheme="teal"
-                  variant="solid"
-                  px="3rem"
-                  type="submit"
-                  value="submit"
-                >
-                  Let's go!
-                </Button>
-              </Box> */}
             </HStack>
           </FormControl>
         </Box>
@@ -193,11 +254,11 @@ const GroceryStore = () => {
             background={`url(${Item.Sign})`}
             backgroundSize="cover"
             // width={['12rem', null, '17rem', null, '25rem']}
-            // width="100%"
-            height="100%"
-            minW={[null, null, null, '480px']}
-            // maxW={['200px', null, '500px', '600px']}
-            maxH={['150px', null, '400px', '500px']}
+            width="100%"
+            // height="100%"
+            // minW={[null, null, null, '480px']}
+            maxW={['200px', null, '400px', '400px']}
+            // maxH={['150px', null, '400px', '500px']}
           >
             {cartItems.length > 1 ? (
               <DeleteIcon
@@ -222,45 +283,33 @@ const GroceryStore = () => {
               ml={[-3]}
               borderRadius="5px"
             >
-              {cartDataLoading ? (
+              {itemsLoading ? (
                 <Image src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/68c512cd-5771-4700-b611-d8bfe279847d/dc3jnaf-5f55762d-dcfe-4f1c-8ce2-6f59140b54cd.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY4YzUxMmNkLTU3NzEtNDcwMC1iNjExLWQ4YmZlMjc5ODQ3ZFwvZGMzam5hZi01ZjU1NzYyZC1kY2ZlLTRmMWMtOGNlMi02ZjU5MTQwYjU0Y2QuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.MboqVNsrmsomDBGyOAEUWxN-oTX3SCewmf48jh8G8X0" />
               ) : (
                 <Table>
-                  <Thead
-                    pos="sticky"
-                    top={0}
-                    bg="#f6dfc2"
-                    boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.5)"
-                  >
+                  <Thead pos="sticky" top={0} bg="#f6dfc2" zIndex={2}>
                     <Tr>
-                      <Th>City, Country</Th>
+                      <Th>Items in Cart</Th>
                       <Th>Price</Th>
                     </Tr>
                   </Thead>
-                  <Tbody boxShadow="inset 0 1px 2px 0 rgba(0, 0, 0, 0.8)">
-                    {cartData
-                      ? cartData.map((item, index) => (
-                          <Tr key={index}>
-                            <Td>{item.city}</Td>
-                            <Td>${item.price}</Td>
-                          </Tr>
-                        ))
-                      : null}
+
+                  <Tbody zIndex={1}>
+                    <Tr fontSize={[20]}>
+                      <Td textTransform="capitalize">{selection}</Td>
+                      <Td>{itemPrice !== 0 ? handleConversion() : null}</Td>
+                    </Tr>
+
                   </Tbody>
                 </Table>
               )}
-              <Text>
-                Total: (<span className="bold">{currency}</span>)
-              </Text>
+              {/*{selection && (*/}
+              {/*  <Button mt={[4]} onClick={onOpen}>*/}
+              {/*    Global Prices*/}
+              {/*  </Button>*/}
+              {/*)}*/}
             </Box>
           </Box>
-          {/*<Box*/}
-          {/*  css={signWrapper}*/}
-          {/*  background={`url(${Item.Sign})`}*/}
-          {/*  backgroundSize="cover"*/}
-          {/*  width={['12rem', null, '17rem', null, '25rem']}*/}
-          {/*>*/}
-          {/*</Box>*/}
         </Box>
         <Box
           flexDir={['horizontal', null, 'vertical']}
@@ -294,9 +343,11 @@ const GroceryStore = () => {
               <Box
                 css={shelfStyles}
                 pt={[null, null, '4.4rem', '5.95rem', '7.95rem']}
+                height={['7.3rem', null, null, '8.7rem', '10.7rem']}
               >
                 <GroceryItem
                   name="apples"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Apple}
@@ -304,6 +355,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bananas"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Banana}
@@ -311,6 +363,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="oranges"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Orange}
@@ -318,6 +371,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="potato"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Potato}
@@ -332,6 +386,7 @@ const GroceryStore = () => {
               >
                 <GroceryItem
                   name="onions"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Onion}
@@ -339,6 +394,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="tomato"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Tomato}
@@ -346,6 +402,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bread"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Bread}
@@ -353,6 +410,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="bread"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Bread}
@@ -363,6 +421,7 @@ const GroceryStore = () => {
               <Box css={shelfStyles} pt={[null, null, null, '.6rem', '1.6rem']}>
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -370,6 +429,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -377,6 +437,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="rice"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Rice}
@@ -393,6 +454,7 @@ const GroceryStore = () => {
               >
                 <GroceryItem
                   name="cheese"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Cheese}
@@ -400,6 +462,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="cheese"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Cheese}
@@ -407,6 +470,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="eggs"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Eggs}
@@ -414,6 +478,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="eggs"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Eggs}
@@ -421,6 +486,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="chicken"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Chicken}
@@ -428,6 +494,7 @@ const GroceryStore = () => {
                 />
                 <GroceryItem
                   name="meat"
+                  selection={selection}
                   selectedCity={selectedCity}
                   setSelection={setSelection}
                   component={Item.Meat}
@@ -443,6 +510,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="wine"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Wine}
@@ -450,6 +518,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="beer"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Beer}
@@ -459,6 +528,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -466,6 +536,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -473,6 +544,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="water bottle"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Water}
@@ -482,6 +554,7 @@ const GroceryStore = () => {
                 <Box width="100%" display="flex" justifyContent="center">
                   <GroceryItem
                     name="milk"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Milk}
@@ -489,6 +562,7 @@ const GroceryStore = () => {
                   />
                   <GroceryItem
                     name="milk"
+                    selection={selection}
                     selectedCity={selectedCity}
                     setSelection={setSelection}
                     component={Item.Milk}
