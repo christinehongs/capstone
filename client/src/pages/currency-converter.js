@@ -1,7 +1,7 @@
 import { Box, FormLabel, HStack, Select, Stack } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Converter } from '../components';
+// import { Converter } from '../components';
 
 let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
