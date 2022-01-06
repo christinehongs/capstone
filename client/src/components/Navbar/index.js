@@ -71,7 +71,8 @@ function Navbar() {
                       src={`https://flagcdn.com/w80/${newFlag}.png`}
                     />
                   ) : (
-                    <Avatar size={'sm'} />
+                    <Avatar
+                    size={'sm'} />
                   )}
                 </MenuButton>
                 <MenuList alignItems={'center'}>

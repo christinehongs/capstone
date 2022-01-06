@@ -1,15 +1,15 @@
 import React from 'react';
-import { Select, Stack, HStack, Input, Text } from '@chakra-ui/react';
+import { HStack, Input, Select, Stack } from '@chakra-ui/react';
 
 function Converter(props) {
   return (
     <Stack alignItems={'center'}>
-      <div>
-        {props.fromAmount} {props.firstInput} <h1>=</h1>
-        <Text>
-          {props.toAmount} {props.secondInput}
-        </Text>
-      </div>
+      {/*<div>*/}
+      {/*  {props.fromAmount} {props.firstInput} <h1>=</h1>*/}
+      {/*  <Text>*/}
+      {/*    {props.toAmount} {props.secondInput}*/}
+      {/*  </Text>*/}
+      {/*</div>*/}
       <HStack sx={{ marginTop: '1.5rem !important' }}>
         <Input
           type="number"

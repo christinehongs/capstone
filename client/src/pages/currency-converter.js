@@ -1,6 +1,7 @@
 import { Box, FormLabel, HStack, Select, Stack } from '@chakra-ui/react';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Converter } from '../components';
 
 let currencyApiKey = process.env.REACT_APP_CURRENCY_API_KEY;
 
@@ -135,7 +136,7 @@ export default function CurrencyConverter({
         {/*    {toAmount} {secondInput}*/}
         {/*  </Text>*/}
         {/*</div>*/}
-        <HStack mr={5}>
+        <HStack mr={[null, null, null, '4rem', '5rem']}>
           {/*<Input*/}
           {/*  type="number"*/}
           {/*  value={fromAmount >= 1000000000 ? 1000000000 : fromAmount}*/}
@@ -147,6 +148,7 @@ export default function CurrencyConverter({
             Select Currency:
           </FormLabel>
           <Select
+            minW={'5rem'}
             id="select-currency"
             value={currency}
             onChange={handleFromCurrency}
