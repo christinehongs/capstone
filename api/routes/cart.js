@@ -26,6 +26,9 @@ cartRouter.post('/cart', (req, res) => {
 });
 
 cartRouter.get('/cart', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+
   let cartPriceData = null;
 
   async function findItems(client, itemName) {

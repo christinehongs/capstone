@@ -5,42 +5,44 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 dotenv.config();
-const itemsRouter = express.Router();
+const pricesRouter = express.Router();
 const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 const database = client.db('capstone');
 const items = database.collection('items');
 
-itemsRouter.use(cors());
-itemsRouter.use(bodyParser.json());
-itemsRouter.use(
+pricesRouter.use(cors());
+pricesRouter.use(bodyParser.json());
+pricesRouter.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
 
-let selectedCity;
+let selectedItem;
 
-itemsRouter.post('/items', (req, res) => {
-  selectedCity = req.body;
+pricesRouter.post('/prices', (req, res) => {
+  selectedItem = req.body;
 });
 
-itemsRouter.get('/items', async (req, res) => {
+pricesRouter.get('/prices', async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+
   let itemsPriceData = null;
 
-  console.log(selectedCity && `selected city: ${selectedCity.city}`);
-
-  async function findItems(client) {
+  async function findItems(client, item) {
     // console.log(itemName);
     const result = await client
       .db('capstone')
       .collection('items')
       .find({
-        // name: `${itemName}`,
-        city: `${selectedCity.city}`,
+        name: `${item.name}`,
+        // city: `${selectedItem.city}`,
       })
+      .limit(5)
       .toArray();
     if (result) {
-      // console.log('result:', result);
+      console.log('result:', result);
       return result;
     } else {
     }
@@ -52,11 +54,11 @@ itemsRouter.get('/items', async (req, res) => {
     try {
       await client.connect();
 
-      if (selectedCity !== undefined) {
-        console.log('selected city:', selectedCity);
-        await findItems(client).then((res) => {
+      console.log(selectedItem);
+      if (selectedItem !== undefined) {
+        await findItems(client, selectedItem).then((res) => {
           itemsPriceData = res;
-          console.log('items price data:', itemsPriceData);
+          console.log('items price data:', itemsPriceData[0]);
         });
         // for (let i = 0; i < allItems.length; i++) {
         //   await findItems(client)
@@ -81,4 +83,4 @@ itemsRouter.get('/items', async (req, res) => {
   });
 });
 
-export default itemsRouter;
+export default pricesRouter;

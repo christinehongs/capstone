@@ -9,6 +9,9 @@ const client = new MongoClient(process.env.MONGODB_URI_ENDPOINT);
 const citiesRouter = express.Router();
 
 citiesRouter.get('/cities', async (_, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+
   MongoClient.connect(client, async () => {
     try {
       await client.connect();

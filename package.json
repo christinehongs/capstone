@@ -9,9 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-all": "yarn install && concurrently \"yarn client-install\" \"yarn server-install\"",
     "client-install": "cd client && yarn install",
-    "server-install": "cd server && yarn install",
+    "server-install": "cd api && yarn install",
     "client-start": "cd client && yarn start",
-    "server-start": "cd server && yarn start",
+    "server-start": "cd api && yarn start",
     "start": "concurrently \"yarn client-start\" \"yarn server-start\""
   },
   "repository": {
